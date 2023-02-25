@@ -1,4 +1,4 @@
-namespace video_pujcovna_front;
+namespace video_pujcovna_back;
 
 public class WeatherForecast
 {

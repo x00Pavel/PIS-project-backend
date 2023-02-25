@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace video_pujcovna_front.Controllers;
+namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("[controller]")]

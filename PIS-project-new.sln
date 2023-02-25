@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "video_pujcovna_front", "video_pujcovna_front\video_pujcovna_front.csproj", "{5DFF3788-A4CD-44EF-B63D-F23D2D2D2E7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "video_pujcovna_back", "video_pujcovna_back\video_pujcovna_back.csproj", "{5DFF3788-A4CD-44EF-B63D-F23D2D2D2E7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

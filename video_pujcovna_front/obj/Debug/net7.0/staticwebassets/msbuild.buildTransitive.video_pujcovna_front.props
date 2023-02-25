@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/video_pujcovna_front.props" />
-</Project>
