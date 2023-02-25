@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/video_pujcovna_front.props" />
+</Project>
