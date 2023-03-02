@@ -481,3 +481,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Docker volume for MySql
+mysql_db/
+
+# OS specific files
+.DS_Store
+
+*.sln
