@@ -17,9 +17,16 @@ namespace video_pujcovna_back.Models
         {
         }
 
+        // Used for EF Migrations
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connection_str = "server=127.0.0.1;user=root;password=root;database=videopujcovna";
+
+            var conf = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var connection_str = conf.GetConnectionString("videopujcovna");
             optionsBuilder.UseMySql(connection_str, ServerVersion.AutoDetect(connection_str));
         }
     }
