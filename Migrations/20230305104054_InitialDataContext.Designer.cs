@@ -10,8 +10,8 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230302132436_InitialCreates")]
-    partial class InitialCreates
+    [Migration("20230305104054_InitialDataContext")]
+    partial class InitialDataContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

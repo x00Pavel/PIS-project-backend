@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 
 // Add factory for DB connection
 builder.Services.AddSingleton<DataContextFactory>();
+builder.Services.AddSingleton<UserContextFactory>();
 
 
 

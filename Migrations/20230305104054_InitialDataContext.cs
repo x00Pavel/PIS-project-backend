@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace video_pujcovna_back.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreates : Migration
+    public partial class InitialDataContext : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
