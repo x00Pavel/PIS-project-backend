@@ -1,3 +1,6 @@
+using video_pujcovna_back.Facade;
+using video_pujcovna_back.Factories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add factory for DB connection
+builder.Services.AddSingleton<DbContextFactory>();
+builder.Services.AddSingleton<UserFacade>();
 
 var app = builder.Build();
 
