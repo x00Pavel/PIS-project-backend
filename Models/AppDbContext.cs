@@ -1,19 +1,17 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+
 namespace video_pujcovna_back.Models
 {
-	public class DataContext: DbContext
+	public class AppDbContext: DbContext
 	{
 
-        public DbSet<Actor> Actors { get; set; }
+        public DbSet<User> Users { get; set; }
 
-		public DataContext()
+        public AppDbContext()
 		{
 		}
 
-        public DataContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions options) : base(options)
         {
         }
 

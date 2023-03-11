@@ -9,7 +9,7 @@ namespace video_pujcovna_back.Controllers;
 public class WeatherForecastController : ControllerBase
 {
 
-    private readonly DataContextFactory _contextFactory;
+    private readonly DbContextFactory _contextFactory;
 
     private static readonly string[] Summaries = new[]
     {
@@ -23,7 +23,7 @@ public class WeatherForecastController : ControllerBase
     
     private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, DataContextFactory contextFactory)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, DbContextFactory contextFactory)
     {
         _logger = logger;
         _contextFactory = contextFactory;
@@ -34,8 +34,9 @@ public class WeatherForecastController : ControllerBase
     {
         // Example usage of DB connection
         using (var context = _contextFactory.CreateDbContext())
-        {
-            context.Actors.Add(new Actor { FirstName = "jmeno", LastName = "prijmeni" });
+        {   
+            
+            context.Users.Add(new User { Username = "jmeno", Password = "1234"});
             context.SaveChanges();
         }
 

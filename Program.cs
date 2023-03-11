@@ -1,3 +1,4 @@
+using video_pujcovna_back.Facade;
 using video_pujcovna_back.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add factory for DB connection
-builder.Services.AddSingleton<DataContextFactory>();
-builder.Services.AddSingleton<UserContextFactory>();
-
-
+builder.Services.AddSingleton<DbContextFactory>();
+builder.Services.AddSingleton<UserFacade>();
 
 var app = builder.Build();
 
