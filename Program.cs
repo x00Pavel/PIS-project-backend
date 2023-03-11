@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DbContextFactory>();
 builder.Services.AddSingleton<UserFacade>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

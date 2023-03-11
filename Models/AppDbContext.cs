@@ -5,7 +5,7 @@ namespace video_pujcovna_back.Models
 	public class AppDbContext: DbContext
 	{
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserModel> Users { get; set; }
 
         public AppDbContext()
 		{

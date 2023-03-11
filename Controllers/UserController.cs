@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using video_pujcovna_back.DTO.Input;
+using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Facade;
-using video_pujcovna_back.Factories;
-using video_pujcovna_back.Models;
 
 namespace video_pujcovna_back.Controllers;
 
@@ -19,13 +17,13 @@ public class UserController
     }
 
     [HttpPost]
-    public async Task<EntityEntry<User>> AddUser([FromBody] User user)
-    {
-        return await _userFacade.Add(user);
+    public async Task<UserEntityOutput> AddUser(UserEntityInput user)
+    {   
+        return await _userFacade.AddUser(user);
     }
     
     [HttpGet]
-    public async Task<IEnumerable<User>> GetAllUsers()
+    public async Task<IEnumerable<UserEntityOutput>> GetAllUsers()
     {
         return await _userFacade.GetAllUser();
     }

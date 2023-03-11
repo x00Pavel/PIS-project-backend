@@ -4,11 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace video_pujcovna_back.Models;
 
-public class User
+public class UserModel
 {   
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int UserId { get; set; }
+    public Guid UserId { get; set; } = Guid.NewGuid();
     
     [Required]
     public string Username { get; set; }
