@@ -4,17 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace video_pujcovna_back.Models;
 
-public class UserModel
-{   
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid UserId { get; set; } = Guid.NewGuid();
-    
+public record UserModel : BaseModel
+{
+
     [Required]
     public string Username { get; set; }
     
     [Required]
     public string Password { get; set; }
-
+    
     // TODO add other fields from model
 }
