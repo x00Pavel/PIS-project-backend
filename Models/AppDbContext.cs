@@ -6,6 +6,7 @@ namespace video_pujcovna_back.Models
 	{
 
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<ReservationModel> Reservations { get; set; }
 
         public AppDbContext()
 		{

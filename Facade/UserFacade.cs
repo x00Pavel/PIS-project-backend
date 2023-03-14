@@ -17,17 +17,6 @@ public class UserFacade
         _contextFactory = factory;    
         _mapper = mapper;
     }
-        
-    public async Task<EntityEntry<T>> Add<T>(T entity) where T : class
-    {   
-        var entityMapped = _mapper.Map<T>(entity);
-        await using (var context = _contextFactory.CreateDbContext())
-        {
-            var user = await context.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return user;
-        }
-    }
     
     public async Task<UserEntityOutput> AddUser(UserEntityInput user)
     {   
@@ -38,6 +27,16 @@ public class UserFacade
             await context.SaveChangesAsync();
             var userEntity = _mapper.Map<UserEntityOutput>(result.Entity);
             return userEntity;
+        }
+    }
+
+    public async Task<ICollection<ReservationEntityOutput>> GetUserReservations(Guid id)
+    {
+        await using (var context = _contextFactory.CreateDbContext())
+        {
+            var user = await context.Users.FindAsync(id) ?? throw new Exception("User not found");
+            Console.WriteLine(user.Reservations);
+            return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(user.Reservations.ToList());
         }
     }
 

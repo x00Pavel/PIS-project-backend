@@ -27,4 +27,10 @@ public class UserController
     {
         return await _userFacade.GetAllUser();
     }
+    
+    [HttpGet("{id}")]
+    public async Task<IEnumerable<ReservationEntityOutput>> GetUserReservations(Guid id)
+    {
+        return await _userFacade.GetUserReservations(id);
+    }
 }

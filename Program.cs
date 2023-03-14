@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 // Add factory for DB connection
 builder.Services.AddSingleton<DbContextFactory>();
 builder.Services.AddSingleton<UserFacade>();
+builder.Services.AddSingleton<ReservationFacade>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

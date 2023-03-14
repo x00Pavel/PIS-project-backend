@@ -1,6 +1,6 @@
 namespace video_pujcovna_back.DTO.Input;
 
-public class UserEntityInput
+public record UserEntityInput
 {
     public string Username { get; set; }
     public string Password { get; set; }
