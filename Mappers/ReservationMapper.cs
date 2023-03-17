@@ -8,6 +8,6 @@ public class ReservationMapper: Profile
 {
     public ReservationMapper()
     {
-        CreateMap<RecordModel, ReservationEntityOutput>();
+        CreateMap<ReservationModel, ReservationEntityOutput>();
     }
 }
