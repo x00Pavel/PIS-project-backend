@@ -1,5 +1,5 @@
-using video_pujcovna_back.Facade;
 using video_pujcovna_back.Factories;
+using video_pujcovna_back.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +12,8 @@ builder.Services.AddSwaggerGen();
 
 // Add factory for DB connection
 builder.Services.AddSingleton<DbContextFactory>();
-builder.Services.AddSingleton<UserFacade>();
-builder.Services.AddSingleton<ReservationFacade>();
+builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<ReservationRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

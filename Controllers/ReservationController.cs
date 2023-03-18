@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
-using video_pujcovna_back.Facade;
+using video_pujcovna_back.Repository;
 
 namespace video_pujcovna_back.Controllers;
 
@@ -9,9 +9,9 @@ namespace video_pujcovna_back.Controllers;
 [Route("api/[controller]")]
 public class ReservationController
 {
-    private readonly ReservationFacade _reservationFacade;
+    private readonly ReservationRepository _reservationFacade;
 
-    public ReservationController(ReservationFacade reservationFacade)
+    public ReservationController(ReservationRepository reservationFacade)
     {
         _reservationFacade = reservationFacade;
     }

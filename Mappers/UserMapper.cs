@@ -9,7 +9,9 @@ public class UserMapper : Profile
 {
     public UserMapper()
     {
-        CreateMap<UserModel, UserEntityOutput>();
+        CreateMap<UserModel, UserEntityOutput>()
+            .ForMember(src => src.Reservations, 
+                opt => opt.MapFrom(src => src.Reservations.Select(x => x.Id)));
         CreateMap<UserEntityInput, UserModel>();
     }
 }

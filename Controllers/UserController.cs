@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
-using video_pujcovna_back.Facade;
+using video_pujcovna_back.Repository;
 
 namespace video_pujcovna_back.Controllers;
 
@@ -9,28 +9,34 @@ namespace video_pujcovna_back.Controllers;
 [Route("api/[controller]")]
 public class UserController
 {
-    private readonly UserFacade _userFacade;
+    private readonly UserRepository _userRepository;
     
-    public UserController(UserFacade userFacade)
+    public UserController(UserRepository userRepository)
     {
-        _userFacade = userFacade;
+        _userRepository = userRepository;
     }
 
     [HttpPost]
     public async Task<UserEntityOutput> AddUser(UserEntityInput user)
     {   
-        return await _userFacade.AddUser(user);
+        return await _userRepository.AddUser(user);
     }
     
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<IEnumerable<UserEntityOutput>> GetAllUsers()
     {
-        return await _userFacade.GetAllUser();
+        return await _userRepository.GetAllUser();
     }
-    
-    [HttpGet("{id}")]
+
+    [HttpGet("{id:guid}/reservations")]
     public async Task<IEnumerable<ReservationEntityOutput>> GetUserReservations(Guid id)
     {
-        return await _userFacade.GetUserReservations(id);
+        return await _userRepository.GetUserReservations(id);
+    }
+    
+    [HttpGet("{id:guid}")]
+    public async Task<UserEntityOutput> GetUser(Guid id)
+    {
+        return await _userRepository.GetUser(id);
     }
 }

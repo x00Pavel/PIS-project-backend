@@ -5,14 +5,14 @@ using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Factories;
 using video_pujcovna_back.Models;
 
-namespace video_pujcovna_back.Facade;
+namespace video_pujcovna_back.Repository;
 
-public class ReservationFacade
+public class ReservationRepository
 {
     private readonly DbContextFactory _contextFactory;
     private readonly IMapper _mapper;
     
-    public ReservationFacade(DbContextFactory factory, IMapper mapper)
+    public ReservationRepository(DbContextFactory factory, IMapper mapper)
     {
         _contextFactory = factory;    
         _mapper = mapper;

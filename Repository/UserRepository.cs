@@ -1,18 +1,18 @@
 using AutoMapper;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Factories;
 using video_pujcovna_back.Models;
 
-namespace video_pujcovna_back.Facade;
+namespace video_pujcovna_back.Repository;
 
-public class UserFacade
+public class UserRepository
 {   
     private readonly DbContextFactory _contextFactory;
     private readonly IMapper _mapper;
     
-    public UserFacade(DbContextFactory factory, IMapper mapper)
+    public UserRepository(DbContextFactory factory, IMapper mapper)
     {
         _contextFactory = factory;    
         _mapper = mapper;
@@ -30,13 +30,14 @@ public class UserFacade
         }
     }
 
-    public async Task<ICollection<ReservationEntityOutput>> GetUserReservations(Guid id)
+    public async Task<ICollection<ReservationEntityOutput>> GetUserReservations(Guid userId)
     {
         await using (var context = _contextFactory.CreateDbContext())
         {
-            var user = await context.Users.FindAsync(id) ?? throw new Exception("User not found");
-            Console.WriteLine(user.Reservations);
-            return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(user.Reservations.ToList());
+            var result = await context.Users
+                .Include(u => u.Reservations)
+                .FirstAsync(u => u.Id == userId) ?? throw new Exception("User not found");
+            return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(result.Reservations.ToList());
         }
     }
 
@@ -59,20 +60,25 @@ public class UserFacade
         }
     }
     
-    public async Task<UserModel> GetUser(int id)
+    public async Task<UserEntityOutput> GetUser(Guid id)
     {
         await using (var context = _contextFactory.CreateDbContext())
         {
-            return await context.Users.FindAsync(id) ?? throw new Exception("User not found");
+            var user = await context.Users
+                .Include(u => u.Reservations)
+                .FirstAsync(u => u.Id == id) ?? throw new Exception("User not found");
+            return _mapper.Map<UserEntityOutput>(user);
         }
     }
 
     public async Task<IEnumerable<UserEntityOutput>> GetAllUser()
     {
         await using (var context = _contextFactory.CreateDbContext())
-        {   
-            
-            return _mapper.Map<IList<UserModel>, IList<UserEntityOutput>>(context.Users.ToList());
+        {
+            var result = await context.Users
+                .Include(u => u.Reservations)
+                .ToListAsync();
+            return _mapper.Map<IList<UserModel>, IList<UserEntityOutput>>(result);
         }
     }
 }
