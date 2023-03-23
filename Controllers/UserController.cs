@@ -7,36 +7,37 @@ namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController
+public class UserController: ControllerBase<UserRepository>
 {
-    private readonly UserRepository _userRepository;
     
-    public UserController(UserRepository userRepository)
+    public UserController(UserRepository userRepository) : base(userRepository)
     {
-        _userRepository = userRepository;
     }
+    
 
     [HttpPost]
     public async Task<UserEntityOutput> AddUser(UserEntityInput user)
     {   
-        return await _userRepository.AddUser(user);
+        var userMapped = await Repository.AddUser(user);
+        Console.WriteLine(userMapped);
+        return userMapped;
     }
     
     [HttpGet("all")]
     public async Task<IEnumerable<UserEntityOutput>> GetAllUsers()
     {
-        return await _userRepository.GetAllUser();
+        return await Repository.GetAllUser();
     }
 
     [HttpGet("{id:guid}/reservations")]
     public async Task<IEnumerable<ReservationEntityOutput>> GetUserReservations(Guid id)
     {
-        return await _userRepository.GetUserReservations(id);
+        return await Repository.GetUserReservations(id);
     }
     
     [HttpGet("{id:guid}")]
     public async Task<UserEntityOutput> GetUser(Guid id)
     {
-        return await _userRepository.GetUser(id);
+        return await Repository.GetUser(id);
     }
 }

@@ -7,30 +7,28 @@ namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReservationController
+public class ReservationController: ControllerBase<ReservationRepository>
 {
-    private readonly ReservationRepository _reservationFacade;
 
-    public ReservationController(ReservationRepository reservationFacade)
+    public ReservationController(ReservationRepository reservationFacade) : base(reservationFacade)
     {
-        _reservationFacade = reservationFacade;
     }
     
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<IEnumerable<ReservationEntityOutput>> GetAllReservations()
     {
-        return await _reservationFacade.GetAllReservations();
+        return await Repository.GetAllReservations();
     }
     
     [HttpGet("{id}")]
     public async Task<ReservationEntityOutput> GetReservation(Guid id)
     {
-        return await _reservationFacade.GetReservation(id);
+        return await Repository.GetReservation(id);
     }
     
     [HttpPost]
     public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
     {
-        return await _reservationFacade.AddReservation(reservation);
+        return await Repository.AddReservation(reservation);
     }
 }
