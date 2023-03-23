@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using video_pujcovna_back.ModelConfig;
 
 namespace video_pujcovna_back.Models
 {
@@ -7,6 +8,8 @@ namespace video_pujcovna_back.Models
 
         public DbSet<UserModel> Users { get; set; }
         public DbSet<ReservationModel> Reservations { get; set; }
+        public DbSet<RoleModel?> Roles { get; set; }
+        public DbSet<VideotapeModel> VideTape { get; set; }
 
         public AppDbContext()
 		{
@@ -27,6 +30,11 @@ namespace video_pujcovna_back.Models
 
             var connection_str = conf.GetConnectionString("videopujcovna");
             optionsBuilder.UseMySql(connection_str, ServerVersion.AutoDetect(connection_str));
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new RoleModelConfig());
         }
     }
 }
