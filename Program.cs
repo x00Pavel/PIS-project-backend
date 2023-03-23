@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DbContextFactory>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<ReservationRepository>();
+builder.Services.AddSingleton<VideotapeRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
