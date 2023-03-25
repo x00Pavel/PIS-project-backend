@@ -1,6 +1,6 @@
 namespace video_pujcovna_back.DTO.Input;
 
-public record ActorEntityInput
+public record ActorEntity
 {
     public string NameAndSurname { get; init; }
 }

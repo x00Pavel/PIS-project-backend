@@ -8,7 +8,7 @@ public class ActorMapper: Profile
 {
     public ActorMapper()
     {
-        CreateMap<ActorEntityInput, ActorModel>();
-        CreateMap<ActorModel, ActorEntityInput>();
+        CreateMap<ActorEntity, ActorModel>();
+        CreateMap<ActorModel, ActorEntity>();
     }
 }

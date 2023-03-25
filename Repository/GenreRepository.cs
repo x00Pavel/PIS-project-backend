@@ -6,7 +6,7 @@ using video_pujcovna_back.Models;
 
 namespace video_pujcovna_back.Repository;
 
-public class GenreRepository
+public class GenreRepository: IRepository
 {
     private readonly DbContextFactory _dbFactory;
     private readonly IMapper _mapper;
@@ -29,4 +29,9 @@ public class GenreRepository
         return await context.Genre.FirstAsync(x => x.Name == name);
     }
 
+    public async Task<ICollection<GenreEntity>> GetAllGenres()
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        return _mapper.Map<ICollection<GenreEntity>>(await context.Genre.ToListAsync());
+    }
 }

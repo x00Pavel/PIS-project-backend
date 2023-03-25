@@ -6,7 +6,7 @@ public class ControllerBase<TRepository> : IController where TRepository : IRepo
 {
     protected readonly TRepository Repository;
 
-    protected ControllerBase(TRepository repository)
+    public ControllerBase(TRepository repository)
     {
         Repository = repository;
     }
