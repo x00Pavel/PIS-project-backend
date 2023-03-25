@@ -15,6 +15,8 @@ builder.Services.AddSingleton<DbContextFactory>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<ReservationRepository>();
 builder.Services.AddSingleton<VideotapeRepository>();
+builder.Services.AddSingleton<ActorRepository>();
+builder.Services.AddSingleton<GenreRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

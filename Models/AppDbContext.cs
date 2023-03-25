@@ -10,6 +10,8 @@ namespace video_pujcovna_back.Models
         public DbSet<ReservationModel> Reservations { get; set; }
         public DbSet<RoleModel?> Roles { get; set; }
         public DbSet<VideotapeModel> VideTape { get; set; }
+        public DbSet<GenreModel> Genre { get; set; }
+        public DbSet<ActorModel> Actors { get; set; }
 
         public AppDbContext()
 		{
@@ -33,8 +35,11 @@ namespace video_pujcovna_back.Models
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {   
             modelBuilder.ApplyConfiguration(new RoleModelConfig());
+            modelBuilder.ApplyConfiguration(new UserModelConfig());
+            modelBuilder.ApplyConfiguration(new GenreModelConfig());
+            modelBuilder.ApplyConfiguration(new ActorModelConfig());
         }
     }
 }

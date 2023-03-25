@@ -15,4 +15,7 @@ public record ReservationModel: BaseModel
     public DateTime ReservationDate { get; set; }
     [Required]
     public DateTime ReturnDate { get; set; }
+    
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime Timestamp { get; set; }
 }

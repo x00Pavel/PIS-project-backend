@@ -14,7 +14,7 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     }
     
     [HttpGet("all")]
-    public async Task<IEnumerable<VideoTapeEntityOutput>> GetVideoTape()
+    public async Task<IEnumerable<VideoTapeEntityOutput>> GetAllVideotapes()
     {
         return await Repository.GetAllVideotapes();
     }

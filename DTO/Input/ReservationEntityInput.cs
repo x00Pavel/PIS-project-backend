@@ -5,5 +5,5 @@ public record ReservationEntityInput
     public Guid UserId { get; set; }
     public Guid VideotapeId { get; set; }
     public DateTime ReservationDate { get; set; }
-    public DateTime ReturnDate { get; set; } // TODO: Do we always know this value?
+    public DateTime ReturnDate { get; set; }
 }

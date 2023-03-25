@@ -23,7 +23,6 @@ public class UserRepository: RepositoryBase
             // This is the behavior of EF that can't be changed in another way.
             context.Entry(result.Entity.Role).State = EntityState.Unchanged;
             await context.SaveChangesAsync();
-            Console.WriteLine(result.Entity);
             var userEntity = _mapper.Map<UserModel, UserEntityOutput>(result.Entity);
             return userEntity;
         }

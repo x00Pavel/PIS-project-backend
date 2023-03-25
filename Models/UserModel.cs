@@ -14,7 +14,10 @@ public record UserModel : BaseModel
     [Required]
     public string Password { get; set; }
     
+    [Required]
+    public Guid RoleId { get; set; }
     public RoleModel Role { get; set; }
 
     public ICollection<ReservationModel> Reservations { get; set; }
+    
 }
