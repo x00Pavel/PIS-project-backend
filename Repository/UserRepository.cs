@@ -21,7 +21,7 @@ public class UserRepository: RepositoryBase
             var result = await context.Users.AddAsync(userMapped);
             // This is needed to prevent EF insert the Role to the DB.
             // This is the behavior of EF that can't be changed in another way.
-            context.Entry(result.Entity.Role).State = EntityState.Unchanged;
+            Unchanged(context, result.Entity.Role);
             await context.SaveChangesAsync();
             var userEntity = _mapper.Map<UserModel, UserEntityOutput>(result.Entity);
             return userEntity;

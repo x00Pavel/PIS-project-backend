@@ -16,7 +16,10 @@ public class VideotapeRepository: RepositoryBase
     public async Task<ICollection<VideoTapeEntityOutput>> GetAllVideotapes()
     {
         await using var context = _dbFactory.CreateDbContext();
-        var records= await context.VideTape.ToListAsync();
+        var records= await context.VideTape
+            .Include(x => x.Actors)
+            .Include(x => x.Genre)
+            .ToListAsync();
         return _mapper.Map<IList<VideotapeModel>, IList<VideoTapeEntityOutput>>(records);
     }
     
@@ -25,6 +28,7 @@ public class VideotapeRepository: RepositoryBase
         var videoTapeMapped = _mapper.Map<VideotapeModel>(videoTape);
         await using var context = _dbFactory.CreateDbContext();
         var result = await context.VideTape.AddAsync(videoTapeMapped);
+        Unchanged(context, videoTapeMapped.Actors, videoTapeMapped.Genre);
         await context.SaveChangesAsync();
         return _mapper.Map<VideotapeModel, VideoTapeEntityOutput>(result.Entity);
     }
@@ -32,7 +36,10 @@ public class VideotapeRepository: RepositoryBase
     public async Task<VideotapeModel> GetVideotapeModel(Guid id)
     {
         await using var context = _dbFactory.CreateDbContext();
-        return await context.VideTape.FirstAsync(x => x.Id == id);
+        return await context.VideTape
+            .Include(x => x.Actors)
+            .Include(x => x.Genre)
+            .FirstAsync(x => x.Id == id);
     }
 
 }

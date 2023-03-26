@@ -9,5 +9,5 @@ public record VideotapeModel : BaseModel
     [Required]
     public string Description { get; set; }
     public ICollection<GenreModel> Genre { get; set; }
-    public ICollection<ActorModel> Actors { get; set; }
+    public ICollection<ActorModel>? Actors { get; set; }
 }

@@ -17,11 +17,14 @@ public class ReservationRepository: RepositoryBase
     public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
     {   
         var reservationMapped = _mapper.Map<ReservationModel>(reservation);
+        
         await using var context = _dbFactory.CreateDbContext();
+        Console.WriteLine(reservationMapped);
+        reservationMapped.Videotape = await context.VideTape.FindAsync(reservationMapped.Videotape.Id);
+        reservationMapped.User = await context.Users.FindAsync(reservationMapped.User.Id);
+        
         var result = await context.Reservations.AddAsync(reservationMapped);
-        context.Entry(result.Entity.User).State = EntityState.Unchanged;
-        context.Entry(result.Entity.User.Role).State = EntityState.Unchanged;
-        context.Entry(result.Entity.Videotape).State = EntityState.Unchanged;
+        
         await context.SaveChangesAsync();
         var reservationEntity = _mapper.Map<ReservationEntityOutput>(result.Entity);
         return reservationEntity;
