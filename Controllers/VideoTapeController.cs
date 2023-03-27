@@ -13,6 +13,12 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     {
     }
     
+    [HttpGet("{id}")]
+    public async Task<VideoTapeEntityOutput> GetVideotape(Guid id)
+    {
+        return await Repository.GetVideotape(id);
+    }
+    
     [HttpGet("all")]
     public async Task<IEnumerable<VideoTapeEntityOutput>> GetAllVideotapes()
     {
