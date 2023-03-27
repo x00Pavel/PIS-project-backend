@@ -1,11 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using video_pujcovna_back.ModelConfig;
 
 namespace video_pujcovna_back.Models
 {
 	public class AppDbContext: DbContext
 	{
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserModel> Users { get; set; }
+        public DbSet<ReservationModel> Reservations { get; set; }
+        public DbSet<RoleModel?> Roles { get; set; }
+        public DbSet<VideotapeModel> VideTape { get; set; }
+        public DbSet<GenreModel> Genre { get; set; }
+        public DbSet<ActorModel> Actors { get; set; }
 
         public AppDbContext()
 		{
@@ -26,6 +32,14 @@ namespace video_pujcovna_back.Models
 
             var connection_str = conf.GetConnectionString("videopujcovna");
             optionsBuilder.UseMySql(connection_str, ServerVersion.AutoDetect(connection_str));
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {   
+            modelBuilder.ApplyConfiguration(new RoleModelConfig());
+            modelBuilder.ApplyConfiguration(new UserModelConfig());
+            modelBuilder.ApplyConfiguration(new GenreModelConfig());
+            modelBuilder.ApplyConfiguration(new ActorModelConfig());
         }
     }
 }

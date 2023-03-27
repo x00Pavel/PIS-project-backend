@@ -1,32 +1,43 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using video_pujcovna_back.Facade;
-using video_pujcovna_back.Factories;
-using video_pujcovna_back.Models;
+using video_pujcovna_back.DTO.Input;
+using video_pujcovna_back.DTO.Output;
+using video_pujcovna_back.Repository;
 
 namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController
+public class UserController: ControllerBase<UserRepository>
 {
-    private readonly UserFacade _userFacade;
     
-    public UserController(UserFacade userFacade)
+    public UserController(UserRepository userRepository) : base(userRepository)
     {
-        _userFacade = userFacade;
     }
+    
 
     [HttpPost]
-    public async Task<EntityEntry<User>> AddUser([FromBody] User user)
-    {
-        return await _userFacade.Add(user);
+    public async Task<UserEntityOutput> AddUser(UserEntityInput user)
+    {   
+        var userMapped = await Repository.AddUser(user);
+        Console.WriteLine(userMapped);
+        return userMapped;
     }
     
-    [HttpGet]
-    public async Task<IEnumerable<User>> GetAllUsers()
+    [HttpGet("all")]
+    public async Task<IEnumerable<UserEntityOutput>> GetAllUsers()
     {
-        return await _userFacade.GetAllUser();
+        return await Repository.GetAllUser();
+    }
+
+    [HttpGet("{id:guid}/reservations")]
+    public async Task<IEnumerable<ReservationEntityOutput>> GetUserReservations(Guid id)
+    {
+        return await Repository.GetUserReservations(id);
+    }
+    
+    [HttpGet("{id:guid}")]
+    public async Task<UserEntityOutput> GetUser(Guid id)
+    {
+        return await Repository.GetUser(id);
     }
 }

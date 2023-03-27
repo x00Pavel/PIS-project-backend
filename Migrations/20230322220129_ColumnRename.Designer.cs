@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,105 +11,16 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230322220129_ColumnRename")]
+    partial class ColumnRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("ActorModelVideotapeModel", b =>
-                {
-                    b.Property<Guid>("ActorsId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("VideotapesId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("ActorsId", "VideotapesId");
-
-                    b.HasIndex("VideotapesId");
-
-                    b.ToTable("ActorModelVideotapeModel");
-                });
-
-            modelBuilder.Entity("GenreModelVideotapeModel", b =>
-                {
-                    b.Property<string>("GenreName")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid>("VideotapesId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("GenreName", "VideotapesId");
-
-                    b.HasIndex("VideotapesId");
-
-                    b.ToTable("GenreModelVideotapeModel");
-                });
-
-            modelBuilder.Entity("video_pujcovna_back.Models.ActorModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("NameAndSurname")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Actor");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c38f1435-53ed-4829-9f04-0e1075e3b4e3"),
-                            NameAndSurname = "Tom Hanks"
-                        },
-                        new
-                        {
-                            Id = new Guid("f0bc5c3f-1828-40bf-a9e3-6c78fd231c58"),
-                            NameAndSurname = "Tom Cruise"
-                        },
-                        new
-                        {
-                            Id = new Guid("f8ff5b59-212d-4c75-9585-100ed7585650"),
-                            NameAndSurname = "Ivan"
-                        },
-                        new
-                        {
-                            Id = new Guid("d40ab4e2-b723-4f11-aaee-d9e4f5ab394a"),
-                            NameAndSurname = "Honza"
-                        });
-                });
-
-            modelBuilder.Entity("video_pujcovna_back.Models.GenreModel", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Genre");
-
-                    b.HasData(
-                        new
-                        {
-                            Name = "action"
-                        },
-                        new
-                        {
-                            Name = "adventure"
-                        },
-                        new
-                        {
-                            Name = "comedy"
-                        });
-                });
 
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
@@ -116,14 +28,13 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("RecordId")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("UserId")
@@ -217,22 +128,6 @@ namespace video_pujcovna_back.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("4420a08f-d6e1-4b13-88bf-6f3fafae5278"),
-                            Password = "1234",
-                            RoleId = new Guid("659195a5-3667-4350-b4c4-550fa8f1908e"),
-                            Username = "honza@gmail.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("705d7a86-9984-4ea8-a539-f2d3a369e8a9"),
-                            Password = "1234",
-                            RoleId = new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08"),
-                            Username = "jan@gmail.com"
-                        });
                 });
 
             modelBuilder.Entity("video_pujcovna_back.Models.VideotapeModel", b =>
@@ -245,6 +140,10 @@ namespace video_pujcovna_back.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -252,36 +151,6 @@ namespace video_pujcovna_back.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VideTape");
-                });
-
-            modelBuilder.Entity("ActorModelVideotapeModel", b =>
-                {
-                    b.HasOne("video_pujcovna_back.Models.ActorModel", null)
-                        .WithMany()
-                        .HasForeignKey("ActorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("video_pujcovna_back.Models.VideotapeModel", null)
-                        .WithMany()
-                        .HasForeignKey("VideotapesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GenreModelVideotapeModel", b =>
-                {
-                    b.HasOne("video_pujcovna_back.Models.GenreModel", null)
-                        .WithMany()
-                        .HasForeignKey("GenreName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("video_pujcovna_back.Models.VideotapeModel", null)
-                        .WithMany()
-                        .HasForeignKey("VideotapesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
