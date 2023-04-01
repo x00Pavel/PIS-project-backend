@@ -13,4 +13,8 @@ public record PaymentModel : BaseModel
    
    [Required]
    public DateTime Timestamp { get; set; }
+   
+    [Required]
+    public Guid PaymentId { get; set; }
+    public PaymentModel Payment { get; set; }
 }

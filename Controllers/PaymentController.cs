@@ -20,11 +20,4 @@ public class PaymentController: ControllerBase<PaymentRepository>
         return await Repository.GetPayment(id);
     }
 
-    /*
-    [HttpGet("all")]
-    public async Task<IEnumerable<PaymentEntityOutput>> GetAllPayments()
-    {
-        return await Repository.GetAllUserPayments();
-    }
-    */
 }

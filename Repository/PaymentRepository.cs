@@ -18,24 +18,7 @@ public class PaymentRepository: RepositoryBase
     {
         await using var context = _dbFactory.CreateDbContext();
         var payment = await context.Payment
-            .Include(x => x.Price)
-            .Include(x => x.Timestamp)
             .FirstAsync(x => x.Id == id);
         return _mapper.Map<PaymentEntityOutput>(payment);
     }
-
-    /*
-     * TODO: How to filter all user payments?
-     * First it is needed to know all user reservations and then
-     * filter by their ids
-    public async Task<ICollection<PaymentEntityOutput>> GetAllUserPayments()
-    {
-        await using var context = _dbFactory.CreateDbContext();
-        var records = await context.Payment
-            .Include(x => x.Price)
-            .Include(x => x.Timestamp)
-            .FirstAsync(x => x.)
-    }
-    */
-
 }
