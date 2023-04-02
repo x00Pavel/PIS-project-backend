@@ -52,4 +52,11 @@ public class ReservationRepository: RepositoryBase
         var reservations = await context.Reservations.ToListAsync();
         return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(reservations);
     }
+
+    public async Task<IEnumerable<ReservationModel>> GetReservationsWithVideoTape(Guid videoTapeId)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var reservations = await context.Reservations.Where(r => r.Videotape.Id == videoTapeId).ToListAsync();
+        return reservations;
+    }
 }

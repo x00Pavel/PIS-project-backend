@@ -1,20 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
-using video_pujcovna_back.Facades;
 using video_pujcovna_back.Repository;
+using video_pujcovna_back.Facades;
 
 namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReservationController: ControllerBase<ReservationRepository>
+public class ReservationController: ControllerBase<ReservationRepository, ReservationFacade>
 {
-    private readonly ReservationFacade _facade;
 
-    public ReservationController(ReservationRepository reservationFacade, ReservationFacade facade) : base(reservationFacade)
+    public ReservationController(ReservationRepository reservationRepository, ReservationFacade reservationFacade) : base(reservationRepository ,reservationFacade)
     {
-        _facade = facade;
     }
     
     [HttpGet("all")]
@@ -33,5 +31,6 @@ public class ReservationController: ControllerBase<ReservationRepository>
     public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
     {
         return await _facade.AddReservation(reservation);
+        return await Facade.AddReservation(reservation);
     }
 }

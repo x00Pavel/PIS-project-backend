@@ -1,27 +1,38 @@
 using AutoMapper;
+using video_pujcovna_back.Repository;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
-using video_pujcovna_back.Repository;
+using video_pujcovna_back.Models;
 
 namespace video_pujcovna_back.Facades;
 
-public class ReservationFacade
+public class ReservationFacade : FacadeBase<ReservationRepository>
 {
-    private readonly ReservationRepository _reservationRepository;
-    private readonly PaymentRepository _paymentRepository;
-    private readonly IMapper _mapper;
-
-    public ReservationFacade(ReservationRepository reservationRepository, PaymentRepository paymentRepository, IMapper mapper)
+    public ReservationFacade(ReservationRepository reservationFacade, IMapper mapper) : base(reservationFacade, mapper)
     {
-        _reservationRepository = reservationRepository;
-        _paymentRepository = paymentRepository;
-        _mapper = mapper;
     }
-    
+
     public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
     {
-        var payment = await _paymentRepository.NewPayment(12);
-        var newReservation = await _reservationRepository.AddReservation(reservation, payment);
-        return _mapper.Map<ReservationEntityOutput>(newReservation);
+        
+        var reservationModel = Mapper.Map<ReservationModel>(reservation);
+        var videotapeReservations = await Repository.GetReservationsWithVideoTape(reservationModel.Videotape.Id);
+        // Checkin if videotape is already reserved in this time
+        // TODO: now only checking for one available videotape in store -> need to check for all videotapes in store based on 
+        foreach (var videotapeReservation in videotapeReservations)
+        {
+            // Searching for collision via start date
+            if (reservationModel.ReservationDate >= videotapeReservation.ReservationDate && reservationModel.ReservationDate <= videotapeReservation.ReturnDate)
+            {
+                throw new Exception("Videotape is already reserved in this time");
+            }
+            // Searching for collision via end date
+            if (reservationModel.ReturnDate >= videotapeReservation.ReservationDate && reservationModel.ReturnDate <= videotapeReservation.ReturnDate)
+            {
+                throw new Exception("Videotape is already reserved in this time");
+            }
+        }
+        
+        return await Repository.AddReservation(reservation);
     }
 }
