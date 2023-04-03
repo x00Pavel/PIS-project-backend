@@ -40,4 +40,10 @@ public class UserController: ControllerBase<UserRepository>
     {
         return await Repository.GetUser(id);
     }
+    
+    [HttpGet("{id:guid}/payments")]
+    public async Task<IEnumerable<PaymentEntityOutput>> GetUserPayments(Guid id)
+    {
+        return await Repository.GetUserPayments(id);
+    }
 }

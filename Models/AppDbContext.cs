@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.ModelConfig;
 
 namespace video_pujcovna_back.Models
@@ -12,6 +13,7 @@ namespace video_pujcovna_back.Models
         public DbSet<VideotapeModel> VideTape { get; set; }
         public DbSet<GenreModel> Genre { get; set; }
         public DbSet<ActorModel> Actors { get; set; }
+        public DbSet<PaymentModel> Payment { get; set; }
 
         public AppDbContext()
 		{
