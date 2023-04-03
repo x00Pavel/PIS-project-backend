@@ -66,22 +66,22 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5a93a7f5-8977-41a2-a58d-dae3db86fb4a"),
+                            Id = new Guid("9f93df1d-590b-4ca6-90a5-f70fb63a5b9b"),
                             NameAndSurname = "Tom Hanks"
                         },
                         new
                         {
-                            Id = new Guid("b484f1c3-9d2d-4fb6-9aeb-f8bc2bf710a3"),
+                            Id = new Guid("9d609a7b-1de9-4db1-940e-9dec79021331"),
                             NameAndSurname = "Tom Cruise"
                         },
                         new
                         {
-                            Id = new Guid("9c3e266a-008b-405c-b966-ff373b16a86e"),
+                            Id = new Guid("06c259c4-036b-4d51-ad35-ba078885c665"),
                             NameAndSurname = "Ivan"
                         },
                         new
                         {
-                            Id = new Guid("278dbfd6-d98a-494d-8a74-e1c77cf222a8"),
+                            Id = new Guid("703ddcb9-9300-450b-968b-efae7eabb41c"),
                             NameAndSurname = "Honza"
                         });
                 });
@@ -116,9 +116,6 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("PaymentId")
-                        .HasColumnType("char(36)");
-
                     b.Property<float>("Price")
                         .HasColumnType("float");
 
@@ -126,8 +123,6 @@ namespace video_pujcovna_back.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentId");
 
                     b.ToTable("Payment");
                 });
@@ -248,14 +243,14 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9fc08dc4-e291-4f84-89b2-8f9fce31d6a7"),
+                            Id = new Guid("af9284ea-db6d-474f-9847-3240c6a3a370"),
                             Password = "1234",
                             RoleId = new Guid("659195a5-3667-4350-b4c4-550fa8f1908e"),
                             Username = "honza@gmail.com"
                         },
                         new
                         {
-                            Id = new Guid("0244de64-baa0-457d-add5-27eb4e7b5779"),
+                            Id = new Guid("5a9e39e3-f799-46bb-80a1-f086642d96f0"),
                             Password = "1234",
                             RoleId = new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08"),
                             Username = "jan@gmail.com"
@@ -309,17 +304,6 @@ namespace video_pujcovna_back.Migrations
                         .HasForeignKey("VideotapesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("video_pujcovna_back.Models.PaymentModel", b =>
-                {
-                    b.HasOne("video_pujcovna_back.Models.PaymentModel", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>

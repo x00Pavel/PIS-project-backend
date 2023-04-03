@@ -57,18 +57,11 @@ namespace video_pujcovna_back.Migrations
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Price = table.Column<float>(type: "float", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    PaymentId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Payment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payment_Payment_PaymentId",
-                        column: x => x.PaymentId,
-                        principalTable: "Payment",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -77,10 +70,10 @@ namespace video_pujcovna_back.Migrations
                 columns: new[] { "Id", "NameAndSurname" },
                 values: new object[,]
                 {
-                    { new Guid("278dbfd6-d98a-494d-8a74-e1c77cf222a8"), "Honza" },
-                    { new Guid("5a93a7f5-8977-41a2-a58d-dae3db86fb4a"), "Tom Hanks" },
-                    { new Guid("9c3e266a-008b-405c-b966-ff373b16a86e"), "Ivan" },
-                    { new Guid("b484f1c3-9d2d-4fb6-9aeb-f8bc2bf710a3"), "Tom Cruise" }
+                    { new Guid("06c259c4-036b-4d51-ad35-ba078885c665"), "Ivan" },
+                    { new Guid("703ddcb9-9300-450b-968b-efae7eabb41c"), "Honza" },
+                    { new Guid("9d609a7b-1de9-4db1-940e-9dec79021331"), "Tom Cruise" },
+                    { new Guid("9f93df1d-590b-4ca6-90a5-f70fb63a5b9b"), "Tom Hanks" }
                 });
 
             migrationBuilder.InsertData(
@@ -88,18 +81,13 @@ namespace video_pujcovna_back.Migrations
                 columns: new[] { "Id", "Password", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("0244de64-baa0-457d-add5-27eb4e7b5779"), "1234", new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08"), "jan@gmail.com" },
-                    { new Guid("9fc08dc4-e291-4f84-89b2-8f9fce31d6a7"), "1234", new Guid("659195a5-3667-4350-b4c4-550fa8f1908e"), "honza@gmail.com" }
+                    { new Guid("5a9e39e3-f799-46bb-80a1-f086642d96f0"), "1234", new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08"), "jan@gmail.com" },
+                    { new Guid("af9284ea-db6d-474f-9847-3240c6a3a370"), "1234", new Guid("659195a5-3667-4350-b4c4-550fa8f1908e"), "honza@gmail.com" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_PaymentId",
                 table: "Reservations",
-                column: "PaymentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payment_PaymentId",
-                table: "Payment",
                 column: "PaymentId");
 
             migrationBuilder.AddForeignKey(
@@ -128,32 +116,32 @@ namespace video_pujcovna_back.Migrations
             migrationBuilder.DeleteData(
                 table: "Actor",
                 keyColumn: "Id",
-                keyValue: new Guid("278dbfd6-d98a-494d-8a74-e1c77cf222a8"));
+                keyValue: new Guid("06c259c4-036b-4d51-ad35-ba078885c665"));
 
             migrationBuilder.DeleteData(
                 table: "Actor",
                 keyColumn: "Id",
-                keyValue: new Guid("5a93a7f5-8977-41a2-a58d-dae3db86fb4a"));
+                keyValue: new Guid("703ddcb9-9300-450b-968b-efae7eabb41c"));
 
             migrationBuilder.DeleteData(
                 table: "Actor",
                 keyColumn: "Id",
-                keyValue: new Guid("9c3e266a-008b-405c-b966-ff373b16a86e"));
+                keyValue: new Guid("9d609a7b-1de9-4db1-940e-9dec79021331"));
 
             migrationBuilder.DeleteData(
                 table: "Actor",
                 keyColumn: "Id",
-                keyValue: new Guid("b484f1c3-9d2d-4fb6-9aeb-f8bc2bf710a3"));
+                keyValue: new Guid("9f93df1d-590b-4ca6-90a5-f70fb63a5b9b"));
 
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Id",
-                keyValue: new Guid("0244de64-baa0-457d-add5-27eb4e7b5779"));
+                keyValue: new Guid("5a9e39e3-f799-46bb-80a1-f086642d96f0"));
 
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Id",
-                keyValue: new Guid("9fc08dc4-e291-4f84-89b2-8f9fce31d6a7"));
+                keyValue: new Guid("af9284ea-db6d-474f-9847-3240c6a3a370"));
 
             migrationBuilder.DropColumn(
                 name: "PaymentId",

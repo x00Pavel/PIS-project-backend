@@ -82,13 +82,13 @@ public class UserRepository: RepositoryBase
     {
         // First filter all user reservations
         await using var context = _dbFactory.CreateDbContext();
-        var reservations = await context.Users
+        var userReservationsHelper = await context.Users
             .Include(u => u.Reservations)
             .FirstAsync(u => u.Id == userId) ?? throw new Exception("User not found");
 
         // Make list of all user payments ids from his reservations
         List<Guid> paymentIds = new List<Guid>();
-        foreach (var reservation in reservations.Reservations)
+        foreach (var reservation in userReservationsHelper.Reservations)
         {
             paymentIds.Add(reservation.PaymentId);
         }
