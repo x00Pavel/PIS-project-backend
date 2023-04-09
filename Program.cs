@@ -1,4 +1,11 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using video_pujcovna_back.Configs;
+using video_pujcovna_back.Facades;
 using video_pujcovna_back.Factories;
+using video_pujcovna_back.Models;
 using video_pujcovna_back.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,13 +17,50 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add factory for DB connection
-builder.Services.AddSingleton<DbContextFactory>();
-builder.Services.AddSingleton<UserRepository>();
-builder.Services.AddSingleton<ReservationRepository>();
-builder.Services.AddSingleton<VideotapeRepository>();
-builder.Services.AddSingleton<ActorRepository>();
-builder.Services.AddSingleton<GenreRepository>();
+builder.Services.AddScoped<DbContextFactory>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<ReservationRepository>();
+builder.Services.AddScoped<VideotapeRepository>();
+builder.Services.AddScoped<ActorRepository>();
+builder.Services.AddScoped<GenreRepository>();
+
+builder.Services.AddScoped<UserFacade>();
+
+builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+builder.Services.AddSingleton(new JwtConfig
+{
+    Secret = builder.Configuration.GetSection("JwtConfig:Secret").Value
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(jwt =>
+{
+    var key = Encoding.ASCII.GetBytes(
+        builder.Configuration.GetSection("JwtConfig:Secret").Value);
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        RequireExpirationTime = false,
+        ValidateLifetime = true
+    };
+});
+
+builder.Services
+    .AddDefaultIdentity<UserModel>(
+        options => options.SignIn.RequireConfirmedAccount = false )
+    .AddRoles<RoleModel>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -34,8 +78,8 @@ app.UseHttpsRedirection();
 // Enable CORS
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

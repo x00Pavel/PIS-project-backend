@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,9 +11,11 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230331210355_IdentityFramework")]
+    partial class IdentityFramework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,12 +99,10 @@ namespace video_pujcovna_back.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("longtext");
@@ -133,37 +134,37 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
+                            UserId = new Guid("c1293246-f660-4e46-8b64-49c024d3d796"),
                             RoleId = new Guid("659195a5-3667-4350-b4c4-550fa8f1908e")
                         },
                         new
                         {
-                            UserId = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
+                            UserId = new Guid("c1293246-f660-4e46-8b64-49c024d3d796"),
                             RoleId = new Guid("5fc03444-56b7-4ca7-a7de-dd4bec93e44e")
                         },
                         new
                         {
-                            UserId = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
+                            UserId = new Guid("c1293246-f660-4e46-8b64-49c024d3d796"),
                             RoleId = new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e")
                         },
                         new
                         {
-                            UserId = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
+                            UserId = new Guid("c57501c1-eb34-4539-a230-5bca8bafafae"),
                             RoleId = new Guid("5fc03444-56b7-4ca7-a7de-dd4bec93e44e")
                         },
                         new
                         {
-                            UserId = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
+                            UserId = new Guid("c57501c1-eb34-4539-a230-5bca8bafafae"),
                             RoleId = new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e")
                         },
                         new
                         {
-                            UserId = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
+                            UserId = new Guid("c1124ec4-e024-45fb-ab35-592a3ecfe9b7"),
                             RoleId = new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e")
                         },
                         new
                         {
-                            UserId = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
+                            UserId = new Guid("3d296e24-21ba-448b-a4e1-055973cf6699"),
                             RoleId = new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08")
                         });
                 });
@@ -174,12 +175,10 @@ namespace video_pujcovna_back.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Value")
                         .HasColumnType("longtext");
@@ -206,22 +205,22 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e87907e2-7018-4ba3-b03a-19de874e8fa8"),
+                            Id = new Guid("03b01b0b-7907-4fe8-8942-8ae1a2e7da0a"),
                             NameAndSurname = "Tom Hanks"
                         },
                         new
                         {
-                            Id = new Guid("b2fd18ae-ff43-48bf-8e2a-5d2f495373ce"),
+                            Id = new Guid("43675344-4d56-4e2e-ae7e-3bc5a9d62e39"),
                             NameAndSurname = "Tom Cruise"
                         },
                         new
                         {
-                            Id = new Guid("cd73fe57-3ea3-4788-9333-3bf5f9ce0493"),
+                            Id = new Guid("af944a99-cb51-44cb-8b65-3d7e2103fe8b"),
                             NameAndSurname = "Ivan"
                         },
                         new
                         {
-                            Id = new Guid("3161d162-3472-42d7-9fbd-5258aa6892f8"),
+                            Id = new Guid("e5a4a0de-ec3a-41f3-92af-df5e428904dd"),
                             NameAndSurname = "Honza"
                         });
                 });
@@ -250,30 +249,10 @@ namespace video_pujcovna_back.Migrations
                         });
                 });
 
-            modelBuilder.Entity("video_pujcovna_back.Models.PaymentModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payment");
-                });
-
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("PaymentId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("ReservationDate")
@@ -293,8 +272,6 @@ namespace video_pujcovna_back.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentId");
 
                     b.HasIndex("UserId");
 
@@ -431,9 +408,9 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
+                            Id = new Guid("c1124ec4-e024-45fb-ab35-592a3ecfe9b7"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d047440d-101c-468a-bfa0-97d229bbcc61",
+                            ConcurrencyStamp = "16ef2bbe-5b7d-4bf1-9641-8e0439b6e44f",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -443,9 +420,9 @@ namespace video_pujcovna_back.Migrations
                         },
                         new
                         {
-                            Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
+                            Id = new Guid("c57501c1-eb34-4539-a230-5bca8bafafae"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "718273aa-13f3-4f91-995f-e77ec031774d",
+                            ConcurrencyStamp = "f2cffca7-5df2-4c5c-b037-7238c5fd9b17",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -455,9 +432,9 @@ namespace video_pujcovna_back.Migrations
                         },
                         new
                         {
-                            Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
+                            Id = new Guid("c1293246-f660-4e46-8b64-49c024d3d796"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "15ae320a-2fe5-4ab2-a702-e118a25c91db",
+                            ConcurrencyStamp = "43f478c1-a67e-4050-a416-1b4b930e6958",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -467,9 +444,9 @@ namespace video_pujcovna_back.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
+                            Id = new Guid("3d296e24-21ba-448b-a4e1-055973cf6699"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f68589c-754a-4716-9d7f-40b470eb7cc2",
+                            ConcurrencyStamp = "e2418128-45ec-4103-9f4a-fa83fa881fee",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -581,12 +558,6 @@ namespace video_pujcovna_back.Migrations
 
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
-                    b.HasOne("video_pujcovna_back.Models.PaymentModel", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("video_pujcovna_back.Models.UserModel", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId")
@@ -598,8 +569,6 @@ namespace video_pujcovna_back.Migrations
                         .HasForeignKey("VideotapeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Payment");
 
                     b.Navigation("User");
 

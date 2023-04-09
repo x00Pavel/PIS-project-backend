@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,9 +11,11 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230331222442_RoleNavProp")]
+    partial class RoleNavProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,22 +209,22 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e87907e2-7018-4ba3-b03a-19de874e8fa8"),
+                            Id = new Guid("f094d8a1-3552-43df-a27b-7448f72c467f"),
                             NameAndSurname = "Tom Hanks"
                         },
                         new
                         {
-                            Id = new Guid("b2fd18ae-ff43-48bf-8e2a-5d2f495373ce"),
+                            Id = new Guid("ffcf9bde-784e-4b60-a295-444fcf32f9f2"),
                             NameAndSurname = "Tom Cruise"
                         },
                         new
                         {
-                            Id = new Guid("cd73fe57-3ea3-4788-9333-3bf5f9ce0493"),
+                            Id = new Guid("5c4433b8-1480-4596-b10b-856fff5482ff"),
                             NameAndSurname = "Ivan"
                         },
                         new
                         {
-                            Id = new Guid("3161d162-3472-42d7-9fbd-5258aa6892f8"),
+                            Id = new Guid("a4ec67de-4607-4775-9e83-3ad59426c993"),
                             NameAndSurname = "Honza"
                         });
                 });
@@ -250,30 +253,10 @@ namespace video_pujcovna_back.Migrations
                         });
                 });
 
-            modelBuilder.Entity("video_pujcovna_back.Models.PaymentModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payment");
-                });
-
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("PaymentId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("ReservationDate")
@@ -293,8 +276,6 @@ namespace video_pujcovna_back.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentId");
 
                     b.HasIndex("UserId");
 
@@ -325,11 +306,16 @@ namespace video_pujcovna_back.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
+                    b.Property<Guid?>("UserModelId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
+
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("AspNetRoles", (string)null);
 
@@ -433,7 +419,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d047440d-101c-468a-bfa0-97d229bbcc61",
+                            ConcurrencyStamp = "5b2aa2b4-a1e2-4979-9837-15baeadd0651",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -445,7 +431,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "718273aa-13f3-4f91-995f-e77ec031774d",
+                            ConcurrencyStamp = "9adeae96-bf4c-4245-9a46-3c61bc660a83",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -457,7 +443,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "15ae320a-2fe5-4ab2-a702-e118a25c91db",
+                            ConcurrencyStamp = "37b2fcb4-777c-441e-b8f9-025d8c749891",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -469,7 +455,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f68589c-754a-4716-9d7f-40b470eb7cc2",
+                            ConcurrencyStamp = "440bb0c7-5fec-4b4c-b65b-ee4120e4a29a",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -581,12 +567,6 @@ namespace video_pujcovna_back.Migrations
 
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
-                    b.HasOne("video_pujcovna_back.Models.PaymentModel", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("video_pujcovna_back.Models.UserModel", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId")
@@ -599,16 +579,23 @@ namespace video_pujcovna_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Payment");
-
                     b.Navigation("User");
 
                     b.Navigation("Videotape");
                 });
 
+            modelBuilder.Entity("video_pujcovna_back.Models.RoleModel", b =>
+                {
+                    b.HasOne("video_pujcovna_back.Models.UserModel", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserModelId");
+                });
+
             modelBuilder.Entity("video_pujcovna_back.Models.UserModel", b =>
                 {
                     b.Navigation("Reservations");
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

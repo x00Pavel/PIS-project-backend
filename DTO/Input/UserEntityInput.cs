@@ -1,9 +1,10 @@
 namespace video_pujcovna_back.DTO.Input;
 
 
-public record UserEntityInput
+public class UserEntityInput: UserBaseDTO
 {
-    public string Username { get; set; }
-    public string Password { get; set; }
-    public RoleEntityInput Role { get; set; }
+    public string? UserName { get; set; } = string.Empty;
+    
+    public ICollection<string> Roles { get; set; }
+    
 }
