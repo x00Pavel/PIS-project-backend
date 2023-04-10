@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace video_pujcovna_back.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityFramework : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -99,6 +99,20 @@ namespace video_pujcovna_back.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Price = table.Column<float>(type: "float", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "VideTape",
                 columns: table => new
                 {
@@ -166,9 +180,9 @@ namespace video_pujcovna_back.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false)
+                    ProviderKey = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ProviderDisplayName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -216,9 +230,9 @@ namespace video_pujcovna_back.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    LoginProvider = table.Column<string>(type: "varchar(255)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Name = table.Column<string>(type: "varchar(128)", maxLength: 128, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Value = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -296,7 +310,8 @@ namespace video_pujcovna_back.Migrations
                     ReservationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PaymentId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -305,6 +320,12 @@ namespace video_pujcovna_back.Migrations
                         name: "FK_Reservations_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -321,10 +342,10 @@ namespace video_pujcovna_back.Migrations
                 columns: new[] { "Id", "NameAndSurname" },
                 values: new object[,]
                 {
-                    { new Guid("03b01b0b-7907-4fe8-8942-8ae1a2e7da0a"), "Tom Hanks" },
-                    { new Guid("43675344-4d56-4e2e-ae7e-3bc5a9d62e39"), "Tom Cruise" },
-                    { new Guid("af944a99-cb51-44cb-8b65-3d7e2103fe8b"), "Ivan" },
-                    { new Guid("e5a4a0de-ec3a-41f3-92af-df5e428904dd"), "Honza" }
+                    { new Guid("30b4eff8-93e7-44aa-8eb6-f4ad3e7a414b"), "Tom Hanks" },
+                    { new Guid("a6307255-4b26-4759-b2c5-b2c467a7e8e4"), "Tom Cruise" },
+                    { new Guid("d12c9848-5bb3-41e0-a84c-96a966750129"), "Ivan" },
+                    { new Guid("e94669cc-2089-494b-a260-615ab41685e0"), "Honza" }
                 });
 
             migrationBuilder.InsertData(
@@ -343,10 +364,10 @@ namespace video_pujcovna_back.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("3d296e24-21ba-448b-a4e1-055973cf6699"), 0, "e2418128-45ec-4103-9f4a-fa83fa881fee", "petr@gmail.com", false, false, null, null, null, null, null, false, null, false, "Petr" },
-                    { new Guid("c1124ec4-e024-45fb-ab35-592a3ecfe9b7"), 0, "16ef2bbe-5b7d-4bf1-9641-8e0439b6e44f", "honza@gmail.com", false, false, null, null, null, null, null, false, null, false, "Honza" },
-                    { new Guid("c1293246-f660-4e46-8b64-49c024d3d796"), 0, "43f478c1-a67e-4050-a416-1b4b930e6958", "pavel@gmail.com", false, false, null, null, null, null, null, false, null, false, "Pavel" },
-                    { new Guid("c57501c1-eb34-4539-a230-5bca8bafafae"), 0, "f2cffca7-5df2-4c5c-b037-7238c5fd9b17", "jan@gmail.com", false, false, null, null, null, null, null, false, null, false, "Jan" }
+                    { new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"), 0, "178b90dc-5499-4134-80f8-4f66a1de5970", "jan@gmail.com", false, false, null, null, null, null, null, false, null, false, "Jan" },
+                    { new Guid("63df0b47-06bb-45a4-8826-790231938dde"), 0, "456d3a9b-f221-48a3-ac7c-75e68b28ce59", "pavel@gmail.com", false, false, null, null, null, null, null, false, null, false, "Pavel" },
+                    { new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"), 0, "a663ed28-99b9-49bb-8b6c-57a1a368e28e", "honza@gmail.com", false, false, null, null, null, null, null, false, null, false, "Honza" },
+                    { new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"), 0, "b62d38b8-e922-4161-a4ee-dd49bfd6935c", "petr@gmail.com", false, false, null, null, null, null, null, false, null, false, "Petr" }
                 });
 
             migrationBuilder.InsertData(
@@ -364,13 +385,13 @@ namespace video_pujcovna_back.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08"), new Guid("3d296e24-21ba-448b-a4e1-055973cf6699") },
-                    { new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e"), new Guid("c1124ec4-e024-45fb-ab35-592a3ecfe9b7") },
-                    { new Guid("5fc03444-56b7-4ca7-a7de-dd4bec93e44e"), new Guid("c1293246-f660-4e46-8b64-49c024d3d796") },
-                    { new Guid("659195a5-3667-4350-b4c4-550fa8f1908e"), new Guid("c1293246-f660-4e46-8b64-49c024d3d796") },
-                    { new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e"), new Guid("c1293246-f660-4e46-8b64-49c024d3d796") },
-                    { new Guid("5fc03444-56b7-4ca7-a7de-dd4bec93e44e"), new Guid("c57501c1-eb34-4539-a230-5bca8bafafae") },
-                    { new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e"), new Guid("c57501c1-eb34-4539-a230-5bca8bafafae") }
+                    { new Guid("5fc03444-56b7-4ca7-a7de-dd4bec93e44e"), new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550") },
+                    { new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e"), new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550") },
+                    { new Guid("5fc03444-56b7-4ca7-a7de-dd4bec93e44e"), new Guid("63df0b47-06bb-45a4-8826-790231938dde") },
+                    { new Guid("659195a5-3667-4350-b4c4-550fa8f1908e"), new Guid("63df0b47-06bb-45a4-8826-790231938dde") },
+                    { new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e"), new Guid("63df0b47-06bb-45a4-8826-790231938dde") },
+                    { new Guid("c8ef7cfe-631d-4fdf-8705-9514a78d7f4e"), new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c") },
+                    { new Guid("da055781-5fd2-47d7-86a1-84b2c5ddba08"), new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -421,6 +442,11 @@ namespace video_pujcovna_back.Migrations
                 column: "VideotapesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservations_PaymentId",
+                table: "Reservations",
+                column: "PaymentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservations_UserId",
                 table: "Reservations",
                 column: "UserId");
@@ -469,6 +495,9 @@ namespace video_pujcovna_back.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "VideTape");

@@ -206,22 +206,22 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e87907e2-7018-4ba3-b03a-19de874e8fa8"),
+                            Id = new Guid("30b4eff8-93e7-44aa-8eb6-f4ad3e7a414b"),
                             NameAndSurname = "Tom Hanks"
                         },
                         new
                         {
-                            Id = new Guid("b2fd18ae-ff43-48bf-8e2a-5d2f495373ce"),
+                            Id = new Guid("a6307255-4b26-4759-b2c5-b2c467a7e8e4"),
                             NameAndSurname = "Tom Cruise"
                         },
                         new
                         {
-                            Id = new Guid("cd73fe57-3ea3-4788-9333-3bf5f9ce0493"),
+                            Id = new Guid("d12c9848-5bb3-41e0-a84c-96a966750129"),
                             NameAndSurname = "Ivan"
                         },
                         new
                         {
-                            Id = new Guid("3161d162-3472-42d7-9fbd-5258aa6892f8"),
+                            Id = new Guid("e94669cc-2089-494b-a260-615ab41685e0"),
                             NameAndSurname = "Honza"
                         });
                 });
@@ -433,7 +433,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d047440d-101c-468a-bfa0-97d229bbcc61",
+                            ConcurrencyStamp = "a663ed28-99b9-49bb-8b6c-57a1a368e28e",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -445,7 +445,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "718273aa-13f3-4f91-995f-e77ec031774d",
+                            ConcurrencyStamp = "178b90dc-5499-4134-80f8-4f66a1de5970",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -457,7 +457,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "15ae320a-2fe5-4ab2-a702-e118a25c91db",
+                            ConcurrencyStamp = "456d3a9b-f221-48a3-ac7c-75e68b28ce59",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -469,7 +469,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f68589c-754a-4716-9d7f-40b470eb7cc2",
+                            ConcurrencyStamp = "b62d38b8-e922-4161-a4ee-dd49bfd6935c",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

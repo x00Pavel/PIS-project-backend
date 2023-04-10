@@ -11,8 +11,8 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230331222442_RoleNavProp")]
-    partial class RoleNavProp
+    [Migration("20230410192610_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,22 +209,22 @@ namespace video_pujcovna_back.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f094d8a1-3552-43df-a27b-7448f72c467f"),
+                            Id = new Guid("30b4eff8-93e7-44aa-8eb6-f4ad3e7a414b"),
                             NameAndSurname = "Tom Hanks"
                         },
                         new
                         {
-                            Id = new Guid("ffcf9bde-784e-4b60-a295-444fcf32f9f2"),
+                            Id = new Guid("a6307255-4b26-4759-b2c5-b2c467a7e8e4"),
                             NameAndSurname = "Tom Cruise"
                         },
                         new
                         {
-                            Id = new Guid("5c4433b8-1480-4596-b10b-856fff5482ff"),
+                            Id = new Guid("d12c9848-5bb3-41e0-a84c-96a966750129"),
                             NameAndSurname = "Ivan"
                         },
                         new
                         {
-                            Id = new Guid("a4ec67de-4607-4775-9e83-3ad59426c993"),
+                            Id = new Guid("e94669cc-2089-494b-a260-615ab41685e0"),
                             NameAndSurname = "Honza"
                         });
                 });
@@ -253,10 +253,30 @@ namespace video_pujcovna_back.Migrations
                         });
                 });
 
+            modelBuilder.Entity("video_pujcovna_back.Models.PaymentModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payment");
+                });
+
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("PaymentId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("ReservationDate")
@@ -276,6 +296,8 @@ namespace video_pujcovna_back.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
 
                     b.HasIndex("UserId");
 
@@ -306,16 +328,11 @@ namespace video_pujcovna_back.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<Guid?>("UserModelId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
-
-                    b.HasIndex("UserModelId");
 
                     b.ToTable("AspNetRoles", (string)null);
 
@@ -419,7 +436,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b2aa2b4-a1e2-4979-9837-15baeadd0651",
+                            ConcurrencyStamp = "a663ed28-99b9-49bb-8b6c-57a1a368e28e",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -431,7 +448,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9adeae96-bf4c-4245-9a46-3c61bc660a83",
+                            ConcurrencyStamp = "178b90dc-5499-4134-80f8-4f66a1de5970",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -443,7 +460,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "37b2fcb4-777c-441e-b8f9-025d8c749891",
+                            ConcurrencyStamp = "456d3a9b-f221-48a3-ac7c-75e68b28ce59",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -455,7 +472,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "440bb0c7-5fec-4b4c-b65b-ee4120e4a29a",
+                            ConcurrencyStamp = "b62d38b8-e922-4161-a4ee-dd49bfd6935c",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -567,6 +584,12 @@ namespace video_pujcovna_back.Migrations
 
             modelBuilder.Entity("video_pujcovna_back.Models.ReservationModel", b =>
                 {
+                    b.HasOne("video_pujcovna_back.Models.PaymentModel", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("video_pujcovna_back.Models.UserModel", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId")
@@ -579,23 +602,16 @@ namespace video_pujcovna_back.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Payment");
+
                     b.Navigation("User");
 
                     b.Navigation("Videotape");
                 });
 
-            modelBuilder.Entity("video_pujcovna_back.Models.RoleModel", b =>
-                {
-                    b.HasOne("video_pujcovna_back.Models.UserModel", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserModelId");
-                });
-
             modelBuilder.Entity("video_pujcovna_back.Models.UserModel", b =>
                 {
                     b.Navigation("Reservations");
-
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
