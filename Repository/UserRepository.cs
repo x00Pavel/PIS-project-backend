@@ -50,10 +50,12 @@ public class UserRepository: RepositoryBase
     public async Task<ICollection<ReservationEntityOutput>> GetUserReservations(Guid userId)
     {
         await using var context = _dbFactory.CreateDbContext();
-        var result = await context.Users
-            .Include(u => u.Reservations)
-            .FirstAsync(u => u.Id == userId) ?? throw new Exception("User not found");
-        return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(result.Reservations.ToList());
+        var result = context.Reservations
+            .Where(r => r.UserId == userId)
+            .Include(r => r.Videotape)
+            .Include(r => r.Payment).ToList()
+                     ?? throw new Exception("Reservation not found");
+        return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(result);
     }
 
     public async Task<UserModel> UpdateUser(UserModel userModel)

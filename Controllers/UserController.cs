@@ -133,7 +133,7 @@ public class UserController: ControllerBase<UserRepository>
     }
 
     [HttpGet("{id:guid}/reservations")]
-    [Authorize(Roles = "customer")]
+    [Authorize(Roles = "customer,admin,employee,lead")]
     public async Task<IEnumerable<ReservationEntityOutput>> GetUserReservations(Guid id)
     {
         return await Repository.GetUserReservations(id);

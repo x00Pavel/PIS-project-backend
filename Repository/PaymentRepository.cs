@@ -21,4 +21,13 @@ public class PaymentRepository: RepositoryBase
             .FirstAsync(x => x.Id == id);
         return _mapper.Map<PaymentEntityOutput>(payment);
     }
+
+    public async Task<PaymentModel> NewPayment(float price)
+    {
+        return new PaymentModel()
+        {
+            Price = price,
+            Timestamp = DateTime.Now
+        };
+    }
 }

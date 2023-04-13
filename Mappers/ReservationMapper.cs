@@ -34,7 +34,7 @@ public class ReservationVideotapeMapper : IValueResolver<ReservationEntityInput,
 
     public VideotapeModel Resolve(ReservationEntityInput source, ReservationModel destination, VideotapeModel destMember, ResolutionContext context)
     {
-        return _videotapeRepository.GetVideotapeModel(source.VideotapeId).Result;
+        return _videotapeRepository.GetVideotapeModelByName(source.VideotapeName).Result;
     }
 }
 
@@ -43,7 +43,9 @@ public class ReservationMapper: Profile
 {
     public ReservationMapper()
     {
-        CreateMap<ReservationModel, ReservationEntityOutput>();
+        CreateMap<ReservationModel, ReservationEntityOutput>()
+            .ForMember(dst => dst.VideotapeName,
+                opt => opt.MapFrom(src => src.Videotape.Title));
         CreateMap<ReservationEntityInput, ReservationModel>()
             .ForMember(opt => opt.User,
                 opt => opt.MapFrom<ReservationUserMapper>())

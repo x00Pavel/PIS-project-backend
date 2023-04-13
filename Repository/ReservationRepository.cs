@@ -14,17 +14,26 @@ public class ReservationRepository: RepositoryBase
     {
     }
     
-    public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
+    public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation, PaymentModel payment)
     {   
         var reservationMapped = _mapper.Map<ReservationModel>(reservation);
-        
         await using var context = _dbFactory.CreateDbContext();
         Console.WriteLine(reservationMapped);
+        reservationMapped.Payment = payment;
         reservationMapped.Videotape = await context.VideTape.FindAsync(reservationMapped.Videotape.Id);
         reservationMapped.User = await context.Users.FindAsync(reservationMapped.User.Id);
         
         var result = await context.Reservations.AddAsync(reservationMapped);
         
+        await context.SaveChangesAsync();
+        var reservationEntity = _mapper.Map<ReservationEntityOutput>(result.Entity);
+        return reservationEntity;
+    }
+
+    public async Task<ReservationEntityOutput> AddReservation(ReservationModel reservation, PaymentModel payment)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var result = await context.Reservations.AddAsync(reservation);
         await context.SaveChangesAsync();
         var reservationEntity = _mapper.Map<ReservationEntityOutput>(result.Entity);
         return reservationEntity;
