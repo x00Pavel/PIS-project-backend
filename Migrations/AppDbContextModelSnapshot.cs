@@ -256,6 +256,9 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<bool>("Paid")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<float>("Price")
                         .HasColumnType("float");
 
@@ -437,7 +440,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e162aefe-0b55-4f39-90ae-985bfcac0504",
+                            ConcurrencyStamp = "f938689a-07f9-4aae-b8ce-1012492c6862",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -449,7 +452,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "878fae24-bcb8-4ab6-8f56-2769d9aa5f49",
+                            ConcurrencyStamp = "4a333b15-0db9-4bfa-a863-27a52922c5f9",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -461,7 +464,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f049db18-76f2-4eaf-b341-a144a603a2b2",
+                            ConcurrencyStamp = "2955b775-f73d-4f9a-86b7-1eb50657b5de",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -473,7 +476,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b2741408-2c32-4ab0-bcb7-97e1e1044631",
+                            ConcurrencyStamp = "2eca9b9e-b6a3-40de-950a-cccd546b5789",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
