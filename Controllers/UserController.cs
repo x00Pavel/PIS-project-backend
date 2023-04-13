@@ -4,12 +4,10 @@ using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using video_pujcovna_back.Configs;
-using video_pujcovna_back.DTO;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Facades;
@@ -62,7 +60,14 @@ public class UserController: ControllerBase<UserRepository>
         return new AuthResult
         {
             Result = HttpStatusCode.Accepted,
-            Token = GenerateJwtToken(userExist)
+            Token = GenerateJwtToken(userExist),
+            User = new UserEntityOutput()
+            {
+                Id = userExist.Id,
+                Email = userExist.Email,
+                UserName = userExist.UserName,
+                Roles = _userManager.GetRolesAsync(userExist).Result
+            },
         };
     }
 
@@ -96,7 +101,14 @@ public class UserController: ControllerBase<UserRepository>
             return new AuthResult()
             {
                 Token = GenerateJwtToken(result),
-                Result = HttpStatusCode.Accepted
+                User = new UserEntityOutput()
+                {
+                    Id = result.Id,
+                    Email = result.Email,
+                    UserName = result.UserName,
+                    Roles = _userManager.GetRolesAsync(result).Result
+                },
+                Result = HttpStatusCode.OK
             };
         }
         catch (Exception e)
