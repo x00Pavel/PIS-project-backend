@@ -4,8 +4,10 @@ public class ReservationEntityOutput
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
-    public Guid VideotapeId { get; set; }
-    public DateTime ReservationDate { get; set; }
-    public DateTime ReturnDate { get; set; }
+    public string VideotapeName { get; set; }
+    public DateTime DateFrom { get; set; }
+    public DateTime DateTo { get; set; }
     public DateTime Timestamp { get; set; }
+    public string State { get; set; }
+    public string PaymentState { get; set; }
 }

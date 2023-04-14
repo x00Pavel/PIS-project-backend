@@ -13,4 +13,6 @@ public record PaymentModel : BaseModel
    
    [Required]
    public DateTime Timestamp { get; set; }
+
+   public bool Paid { get; set; } = false;
 }

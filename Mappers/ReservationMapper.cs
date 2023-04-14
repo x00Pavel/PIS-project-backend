@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Models;
@@ -34,7 +35,7 @@ public class ReservationVideotapeMapper : IValueResolver<ReservationEntityInput,
 
     public VideotapeModel Resolve(ReservationEntityInput source, ReservationModel destination, VideotapeModel destMember, ResolutionContext context)
     {
-        return _videotapeRepository.GetVideotapeModel(source.VideotapeId).Result;
+        return _videotapeRepository.GetVideotapeModelByName(source.VideotapeName).Result;
     }
 }
 
@@ -43,7 +44,11 @@ public class ReservationMapper: Profile
 {
     public ReservationMapper()
     {
-        CreateMap<ReservationModel, ReservationEntityOutput>();
+        CreateMap<ReservationModel, ReservationEntityOutput>()
+            .ForMember(dst => dst.VideotapeName,
+                opt => opt.MapFrom(src => src.Videotape.Title))
+            .ForMember(dst => dst.PaymentState,
+                opt => opt.MapFrom(src => src.Payment.Paid ? "Paid" : "Not paid"));
         CreateMap<ReservationEntityInput, ReservationModel>()
             .ForMember(opt => opt.User,
                 opt => opt.MapFrom<ReservationUserMapper>())

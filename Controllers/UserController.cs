@@ -1,29 +1,31 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
+using video_pujcovna_back.Facades;
+using video_pujcovna_back.Models;
 using video_pujcovna_back.Repository;
 
 namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "admin,employee,lead,customer")]
 public class UserController: ControllerBase<UserRepository>
 {
-    
-    public UserController(UserRepository userRepository) : base(userRepository)
-    {
-    }
-    
 
-    [HttpPost]
-    public async Task<UserEntityOutput> AddUser(UserEntityInput user)
-    {   
-        var userMapped = await Repository.AddUser(user);
-        Console.WriteLine(userMapped);
-        return userMapped;
+    private readonly UserManager<UserModel> _userManager;
+    private readonly UserFacade _userFacade;
+
+    public UserController(UserRepository userRepository, UserManager<UserModel> userManager, UserFacade userFacade) : base(userRepository)
+    {
+        _userManager = userManager;
+        _userFacade = userFacade;
     }
+    
     
     [HttpGet("all")]
+    [Authorize(Roles = "admin")]
     public async Task<IEnumerable<UserEntityOutput>> GetAllUsers()
     {
         return await Repository.GetAllUser();
@@ -40,7 +42,7 @@ public class UserController: ControllerBase<UserRepository>
     {
         return await Repository.GetUser(id);
     }
-    
+
     [HttpGet("{id:guid}/payments")]
     public async Task<IEnumerable<PaymentEntityOutput>> GetUserPayments(Guid id)
     {

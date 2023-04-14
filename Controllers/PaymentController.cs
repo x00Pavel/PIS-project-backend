@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
@@ -7,6 +8,7 @@ namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "admin,lead,employee")]
 public class PaymentController: ControllerBase<PaymentRepository>
 {
     public PaymentController(PaymentRepository repository) : base(repository)

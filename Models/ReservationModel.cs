@@ -12,13 +12,15 @@ public record ReservationModel: BaseModel
     public Guid VideotapeId { get; set; }
     public VideotapeModel Videotape { get; set; }
     [Required]
-    public DateTime ReservationDate { get; set; }
+    public DateTime DateFrom { get; set; }
     [Required]
-    public DateTime ReturnDate { get; set; }
+    public DateTime DateTo { get; set; }
     
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime Timestamp { get; set; }
     [Required]
     public Guid PaymentId { get; set; }
     public PaymentModel Payment { get; set; }
+
+    public string State { get; set; } = "Initial";
 }

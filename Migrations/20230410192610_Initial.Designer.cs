@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,9 +11,11 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410192610_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,9 +259,6 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<bool>("Paid")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<float>("Price")
                         .HasColumnType("float");
 
@@ -276,18 +276,14 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("DateFrom")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("DateTo")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<Guid>("PaymentId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
@@ -440,7 +436,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f938689a-07f9-4aae-b8ce-1012492c6862",
+                            ConcurrencyStamp = "a663ed28-99b9-49bb-8b6c-57a1a368e28e",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -452,7 +448,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4a333b15-0db9-4bfa-a863-27a52922c5f9",
+                            ConcurrencyStamp = "178b90dc-5499-4134-80f8-4f66a1de5970",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -464,7 +460,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2955b775-f73d-4f9a-86b7-1eb50657b5de",
+                            ConcurrencyStamp = "456d3a9b-f221-48a3-ac7c-75e68b28ce59",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -476,7 +472,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2eca9b9e-b6a3-40de-950a-cccd546b5789",
+                            ConcurrencyStamp = "b62d38b8-e922-4161-a4ee-dd49bfd6935c",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

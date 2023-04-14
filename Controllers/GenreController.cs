@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.Repository;
@@ -5,6 +6,7 @@ using video_pujcovna_back.Repository;
 namespace video_pujcovna_back.Controllers;
 
 [ApiController]
+[Authorize(Roles = "admin,lead,employee")]
 [Route("api/[controller]")]
 public class GenreController: ControllerBase<GenreRepository>
 {

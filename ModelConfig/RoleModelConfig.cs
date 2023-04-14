@@ -14,7 +14,7 @@ public class RoleModelConfig: IEntityTypeConfiguration<RoleModel>
     {
         Id = Guid.Parse("da055781-5fd2-47d7-86a1-84b2c5ddba08"),
         Name = "customer",
-        Priority = 60,
+        NormalizedName = "CUSTOMER",
         Description = "Regular customer"
     };
 
@@ -22,30 +22,29 @@ public class RoleModelConfig: IEntityTypeConfiguration<RoleModel>
     {
         Id = Guid.Parse(adminGuid),
         Name = "admin",
-        Priority = 0,
+        NormalizedName = "ADMIN",
         Description = "System administrator"
     };
-
+    
+    
+    public static readonly RoleModel Lead = new()
+    {
+        Id = Guid.Parse(leadGuid),
+        Name = "lead",
+        NormalizedName = "LEAD",
+        Description = "Branch lead"
+    };
+    
+    public static readonly RoleModel Employee = new()
+    {
+        Id = Guid.Parse(employeeGuid),
+        Name = "employee",
+        NormalizedName = "EMPLOYEE",
+        Description = "Regular employee"
+    };
 
     public void Configure(EntityTypeBuilder<RoleModel> builder)
     {   
-        builder.HasData(
-            Admin,
-            new RoleModel
-            {
-                Id = Guid.Parse(leadGuid),
-                Name = "lead",
-                Priority = 20,
-                Description = "Branch lead"
-            },
-            new RoleModel
-            {
-                Id = Guid.Parse(employeeGuid),
-                Name = "employee",
-                Priority = 40,
-                Description = "Regular employee"
-            },
-            Customer
-        );
+        builder.HasData(Admin, Lead, Employee, Customer);
     }
 }

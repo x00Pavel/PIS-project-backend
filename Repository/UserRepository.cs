@@ -1,41 +1,61 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Factories;
-using video_pujcovna_back.Migrations;
 using video_pujcovna_back.Models;
 
 namespace video_pujcovna_back.Repository;
 
 public class UserRepository: RepositoryBase
 {
-    public UserRepository(DbContextFactory dbFactory, IMapper mapper) : base(dbFactory, mapper)
+    private readonly UserManager<UserModel> _userManager;
+    private readonly RoleManager<RoleModel> _roleManager;
+
+    public UserRepository(
+        DbContextFactory dbFactory, 
+        IMapper mapper,
+        UserManager<UserModel> userManager, 
+        RoleManager<RoleModel> roleManager
+    ) : base(dbFactory, mapper)
     {
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
 
-    public async Task<UserEntityOutput> AddUser(UserEntityInput user)
+    public async Task<UserModel> AddUser(UserEntityInput user)
     {
-        var userMapped = _mapper.Map<UserModel>(user);
-        await using (var context = _dbFactory.CreateDbContext())
+        var userMapped = new UserModel
         {
-            var result = await context.Users.AddAsync(userMapped);
-            // This is needed to prevent EF insert the Role to the DB.
-            // This is the behavior of EF that can't be changed in another way.
-            Unchanged(context, result.Entity.Role);
-            await context.SaveChangesAsync();
-            var userEntity = _mapper.Map<UserModel, UserEntityOutput>(result.Entity);
-            return userEntity;
+            Id = Guid.NewGuid(),
+            Email = user.Email,
+            UserName = user.UserName
+        };
+
+        var result = await _userManager.CreateAsync(userMapped, user.Password);
+        if (!result.Succeeded)
+        {
+            throw new Exception("User not created");
         }
+
+        foreach (var r in user.Roles)
+        {
+            var role = await _roleManager.FindByNameAsync(r) ?? throw new Exception("Role not found");
+            await _userManager.AddToRoleAsync(userMapped, role.Name);
+        }
+        return await _userManager.FindByEmailAsync(user.Email);
     }
 
     public async Task<ICollection<ReservationEntityOutput>> GetUserReservations(Guid userId)
     {
         await using var context = _dbFactory.CreateDbContext();
-        var result = await context.Users
-            .Include(u => u.Reservations)
-            .FirstAsync(u => u.Id == userId) ?? throw new Exception("User not found");
-        return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(result.Reservations.ToList());
+        var result = context.Reservations
+            .Where(r => r.UserId == userId)
+            .Include(r => r.Videotape)
+            .Include(r => r.Payment).ToList()
+                     ?? throw new Exception("Reservation not found");
+        return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(result);
     }
 
     public async Task<UserModel> UpdateUser(UserModel userModel)
@@ -64,18 +84,34 @@ public class UserRepository: RepositoryBase
         await using var ctx = _dbFactory.CreateDbContext();
         return await ctx.Users
             .Include(u => u.Reservations)
-            .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
     }
 
     public async Task<IEnumerable<UserEntityOutput>> GetAllUser()
     {
-        await using var context = _dbFactory.CreateDbContext();
-        var result = await context.Users
-            .Include(u => u.Reservations)
-            .Include(u => u.Role)
+        var allUsers = await _userManager.Users
             .ToListAsync();
-        return _mapper.Map<IList<UserModel>, IList<UserEntityOutput>>(result);
+        var mapped = _mapper.Map<IList<UserModel>, IList<UserEntityOutput>>(allUsers);
+        foreach (var u in mapped)
+        {
+            u.Roles = await _userManager.GetRolesAsync(allUsers.First(x => x.Id == u.Id));
+        }
+        return mapped;
+    }
+
+    public async Task<IEnumerable<string>> GetUserRoles(UserModel result)
+    {
+        return await _userManager.GetRolesAsync(result);
+    }
+    
+    public async Task<UserModel?> GetUserByEmail(string userEmail)
+    {
+        return await _userManager.FindByEmailAsync(userEmail);
+    }
+    
+    public async Task<UserModel?> GetUserByUserName(string userName)
+    {
+        return await _userManager.FindByNameAsync(userName);
     }
 
     public async Task<ICollection<PaymentEntityOutput>> GetUserPayments(Guid userId)

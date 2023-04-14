@@ -51,4 +51,13 @@ public class VideotapeRepository: RepositoryBase
             .FirstAsync(x => x.Id == id);
         return _mapper.Map<VideoTapeEntityOutput>(videoTape);
     }
+
+    public async Task<VideotapeModel> GetVideotapeModelByName(string sourceVideotapeName)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        return await context.VideTape
+            .Include(x => x.Actors)
+            .Include(x => x.Genre)
+            .FirstAsync(x => x.Title == sourceVideotapeName);
+    }
 }
