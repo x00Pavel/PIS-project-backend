@@ -38,12 +38,9 @@ public class UserRepository: RepositoryBase
         {
             throw new Exception("User not created");
         }
-
-        foreach (var r in user.Roles)
-        {
-            var role = await _roleManager.FindByNameAsync(r) ?? throw new Exception("Role not found");
-            await _userManager.AddToRoleAsync(userMapped, role.Name);
-        }
+            
+        await _userManager.AddToRoleAsync(userMapped, user.Role);
+        
         return await _userManager.FindByEmailAsync(user.Email);
     }
 
@@ -94,7 +91,7 @@ public class UserRepository: RepositoryBase
         var mapped = _mapper.Map<IList<UserModel>, IList<UserEntityOutput>>(allUsers);
         foreach (var u in mapped)
         {
-            u.Roles = await _userManager.GetRolesAsync(allUsers.First(x => x.Id == u.Id));
+            u.Role = (await _userManager.GetRolesAsync(allUsers.First(x => x.Id == u.Id)))[0];
         }
         return mapped;
     }
