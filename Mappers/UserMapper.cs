@@ -8,7 +8,7 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Mappers;
 
 
-public class String2RoleMapper : IValueResolver<UserEntityInput, UserModel, IEnumerable<RoleModel>>
+public class String2RoleMapper : IValueResolver<UserEntityInput, UserModel, RoleModel>
 {
     private readonly RoleManager<RoleModel> _roleManager;
 
@@ -17,11 +17,12 @@ public class String2RoleMapper : IValueResolver<UserEntityInput, UserModel, IEnu
         _roleManager = roleManager;
     }
 
-    public IEnumerable<RoleModel> Resolve(UserEntityInput source, UserModel destination, IEnumerable<RoleModel> destMember, ResolutionContext context)
+    public RoleModel Resolve(UserEntityInput source, UserModel destination, RoleModel destMember, ResolutionContext context)
     {
-        return source.Roles.Select(role => _roleManager.FindByNameAsync(role).Result ?? throw new KeyNotFoundException("Role not found")).ToList();
+        return _roleManager.FindByNameAsync(source.Role).Result ?? throw new KeyNotFoundException("Role not found");
     }
 }
+
 
 public class UserMapper : Profile
 {
@@ -30,12 +31,7 @@ public class UserMapper : Profile
         CreateMap<UserModel, UserEntityOutput>()
             .ForMember(src => src.Reservations,
                 opt => opt.MapFrom(src => src.Reservations.Select(x => x.Id)));
-        // .ForMember(src => src.Roles,
-            //     opt => opt.MapFrom(src => src.Roles.Select(x => x.Name)));
-            //
         // For Role parameter query database for Role by Name
         CreateMap<UserEntityInput, UserModel>();
-            // .ForMember(src => src.Roles,
-            //     opt => opt.Ignore());
     }
 }

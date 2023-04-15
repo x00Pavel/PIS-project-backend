@@ -63,7 +63,7 @@ public class AuthController: ControllerBase<UserRepository>
                 Id = userExist.Id,
                 Email = userExist.Email,
                 UserName = userExist.UserName,
-                Roles = _userManager.GetRolesAsync(userExist).Result
+                Role = _userManager.GetRolesAsync(userExist).Result[0]
             },
         };
     }
@@ -103,7 +103,7 @@ public class AuthController: ControllerBase<UserRepository>
                     Id = result.Id,
                     Email = result.Email,
                     UserName = result.UserName,
-                    Roles = _userManager.GetRolesAsync(result).Result
+                    Role = _userManager.GetRolesAsync(result).Result[0]
                 },
                 Result = HttpStatusCode.OK
             };
