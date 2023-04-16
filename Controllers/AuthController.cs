@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -70,17 +69,27 @@ public class AuthController: ControllerBase<UserRepository>
 
     [HttpPost("register")]
     public async Task<AuthResult> AddUser(UserEntityInput user)
-    {
+    {   
+        
         if (!ModelState.IsValid)
             return new AuthResult()
             {
                 Result = HttpStatusCode.BadRequest,
                 Errors = new List<string>()
                 {
-                    "Bad request"
+                    "Invalid model state: " + ModelState
                 }
             };
         
+        if (user.UserName == null || user.Email == null || user.Password == null)
+            return new AuthResult()
+            {
+                Result = HttpStatusCode.BadRequest,
+                Errors = new List<string>()
+                {
+                    "Invalid model state: " + ModelState.ToString()
+                }
+            };
         
         if (_userFacade.GetUserByEmail(user.Email).Result != null 
             || _userFacade.GetUserByUserName(user.UserName).Result != null)
