@@ -16,23 +16,15 @@ public class ReservationFacade : FacadeBase<ReservationRepository>
     {
         
         var reservationModel = Mapper.Map<ReservationModel>(reservation);
-        var videotapeReservations = await Repository.GetReservationsWithVideoTape(reservationModel.Videotape.Id);
-        // Checkin if videotape is already reserved in this time
-        // TODO: now only checking for one available videotape in store -> need to check for all videotapes in store based on 
-        foreach (var videotapeReservation in videotapeReservations)
+        var collisions = await Repository.GetCollisions(reservationModel);
+        
+        Console.WriteLine(string.Join(", ", collisions.Select(c => c.Id)));
+        
+        if (collisions.Any())
         {
-            // Searching for collision via start date
-            if (reservationModel.ReservationDate >= videotapeReservation.ReservationDate && reservationModel.ReservationDate <= videotapeReservation.ReturnDate)
-            {
-                throw new Exception("Videotape is already reserved in this time");
-            }
-            // Searching for collision via end date
-            if (reservationModel.ReturnDate >= videotapeReservation.ReservationDate && reservationModel.ReturnDate <= videotapeReservation.ReturnDate)
-            {
-                throw new Exception("Videotape is already reserved in this time");
-            }
+            throw new Exception("Reservation collision");
         }
         
-        return await Repository.AddReservation(reservation);
+        return await Repository.AddReservation(reservationModel);
     }
 }

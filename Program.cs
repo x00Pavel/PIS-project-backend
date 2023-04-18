@@ -1,4 +1,6 @@
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using video_pujcovna_back.Configs;
 using video_pujcovna_back.Factories;
 using video_pujcovna_back.Models;

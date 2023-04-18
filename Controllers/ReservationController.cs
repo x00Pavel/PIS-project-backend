@@ -30,7 +30,6 @@ public class ReservationController: ControllerBase<ReservationRepository, Reserv
     [HttpPost]
     public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
     {
-        return await _facade.AddReservation(reservation);
         return await Facade.AddReservation(reservation);
     }
 }
