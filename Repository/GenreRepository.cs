@@ -34,4 +34,34 @@ public class GenreRepository: IRepository
         await using var context = _dbFactory.CreateDbContext();
         return _mapper.Map<ICollection<GenreEntity>>(await context.Genre.ToListAsync());
     }
+
+    public async Task<GenreEntity> AddGenre(GenreEntity genre)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var genreModel = _mapper.Map<GenreModel>(genre);
+        
+        if (await context.Genre.AnyAsync(x => x.Name == genreModel.Name))
+        {
+            throw new Exception("Genre already exists");
+        }
+
+        await context.Genre.AddAsync(genreModel);
+        await context.SaveChangesAsync();
+        return _mapper.Map<GenreEntity>(genreModel);
+    }
+
+    public async Task<GenreEntity> DeleteGenre(GenreEntity genre)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var genreModel = _mapper.Map<GenreModel>(genre);
+
+        if (!await context.Genre.AnyAsync(x => x.Name == genreModel.Name))
+        {
+            throw new Exception("Genre does not exist");
+        }
+        
+        context.Genre.Remove(genreModel);
+        await context.SaveChangesAsync();
+        return _mapper.Map<GenreEntity>(genreModel);
+    }
 }
