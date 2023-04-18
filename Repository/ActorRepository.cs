@@ -41,4 +41,34 @@ public class ActorRepository : IRepository
         await using var context = _factory.CreateDbContext();
         return _mapper.Map<IEnumerable<ActorEntity>>(await context.Actors.ToListAsync());
     }
+
+    public async Task<ActorEntity> AddActor(ActorEntity actor)
+    {
+        await using var context = _factory.CreateDbContext();
+        var actorModel = _mapper.Map<ActorModel>(actor);
+        
+        if (await context.Actors.AnyAsync(x => x.NameAndSurname == actorModel.NameAndSurname))
+        {
+            throw new Exception("Actor already exists");
+        }
+
+        await context.Actors.AddAsync(actorModel);
+        await context.SaveChangesAsync();
+        return _mapper.Map<ActorEntity>(actorModel);
+    }
+
+    public async Task<ActorEntity> DeleteActor(ActorEntity actor)
+    {
+        await using var context = _factory.CreateDbContext();
+        var actorModel = _mapper.Map<ActorModel>(actor);
+        
+        if (!await context.Actors.AnyAsync(x => x.NameAndSurname == actorModel.NameAndSurname))
+        {
+            throw new Exception("Actor not found");
+        }
+
+        context.Actors.Remove(actorModel);
+        await context.SaveChangesAsync();
+        return _mapper.Map<ActorEntity>(actorModel);
+    }
 }
