@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Facades;
 using video_pujcovna_back.Models;
@@ -47,5 +48,14 @@ public class UserController: ControllerBase<UserRepository>
     public async Task<IEnumerable<PaymentEntityOutput>> GetUserPayments(Guid id)
     {
         return await Repository.GetUserPayments(id);
+    }
+    
+    [HttpPut("{id:guid}")]
+    [Authorize(Roles = "admin,employee,lead,customer")]
+    public async Task<UserEntityOutput> UpdateUser(Guid id, [FromBody] UserUpdate userUpdate)
+    {
+        Console.WriteLine("User role is " + userUpdate.Role);
+        return await _userFacade.UpdateUser(id, userUpdate);
+        
     }
 }

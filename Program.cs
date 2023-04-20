@@ -2,10 +2,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using video_pujcovna_back.Configs;
+using video_pujcovna_back.Facades;
 using video_pujcovna_back.Factories;
 using video_pujcovna_back.Models;
 using video_pujcovna_back.Repository;
-using video_pujcovna_back.Facades;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ builder.Services.AddScoped<VideotapeRepository>();
 builder.Services.AddScoped<ActorRepository>();
 builder.Services.AddScoped<GenreRepository>();
 builder.Services.AddScoped<PaymentRepository>();
+builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<ReservationFacade>();
 
 builder.Services.AddScoped<UserFacade>();
