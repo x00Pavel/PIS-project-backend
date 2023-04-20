@@ -18,7 +18,6 @@ public class ReservationRepository: RepositoryBase
     {   
         var reservationMapped = _mapper.Map<ReservationModel>(reservation);
         await using var context = _dbFactory.CreateDbContext();
-        Console.WriteLine(reservationMapped);
         reservationMapped.Payment = payment;
         reservationMapped.Videotape = await context.VideTape.FindAsync(reservationMapped.Videotape.Id);
         reservationMapped.User = await context.Users.FindAsync(reservationMapped.User.Id);
@@ -30,9 +29,15 @@ public class ReservationRepository: RepositoryBase
         return reservationEntity;
     }
 
-    public async Task<ReservationEntityOutput> AddReservation(ReservationModel reservation, PaymentModel payment)
+    public async Task<ReservationEntityOutput> AddReservation(ReservationModel reservation)
     {
         await using var context = _dbFactory.CreateDbContext();
+        Unchanged(context, reservation.Videotape, reservation.User);
+        reservation.Payment = new PaymentModel
+        {
+            Timestamp = reservation.Timestamp,
+            Price = 100
+        };
         var result = await context.Reservations.AddAsync(reservation);
         await context.SaveChangesAsync();
         var reservationEntity = _mapper.Map<ReservationEntityOutput>(result.Entity);
@@ -51,5 +56,28 @@ public class ReservationRepository: RepositoryBase
         await using var context = _dbFactory.CreateDbContext();
         var reservations = await context.Reservations.ToListAsync();
         return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(reservations);
+    }
+
+    public async Task<IEnumerable<ReservationModel>> GetCollisions(ReservationModel reservationModel)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        // invert following condition
+        return await context.Reservations
+            .Where(r => r.Videotape.Id == reservationModel.Videotape.Id)
+            .Where(r => 
+                (reservationModel.DateFrom <= r.DateFrom && r.DateFrom <= reservationModel.DateTo) ||
+                (reservationModel.DateFrom <= r.DateTo && r.DateTo <= reservationModel.DateTo) ||
+                (r.DateFrom <= reservationModel.DateFrom && reservationModel.DateTo <= r.DateTo))
+            .ToListAsync();
+        
+    }
+
+    public async Task<IEnumerable<ReservationModel>> GetReservationsWithVideoTape(Guid videoTapeId)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var reservations = await context.Reservations
+            .Where(r => r.Videotape.Id == videoTapeId)
+            .ToListAsync();
+        return reservations;
     }
 }

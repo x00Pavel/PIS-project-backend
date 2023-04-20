@@ -29,7 +29,7 @@ public class AuthController: ControllerBase<UserRepository>
         _userManager = userManager;
         _userFacade = userFacade;
     }
-    
+     
     [HttpPost("login")]
     public async Task<AuthResult> Login(UserLogin user)
     {

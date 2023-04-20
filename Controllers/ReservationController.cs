@@ -1,20 +1,26 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
-using video_pujcovna_back.Facades;
 using video_pujcovna_back.Repository;
+using video_pujcovna_back.Facades;
 
 namespace video_pujcovna_back.Controllers;
 
+public class ReservationResponse
+{
+    public ReservationEntityOutput Reservation { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
+    public ICollection<string> Errors { get; set; }
+}
+
 [ApiController]
 [Route("api/[controller]")]
-public class ReservationController: ControllerBase<ReservationRepository>
+public class ReservationController: ControllerBase<ReservationRepository, ReservationFacade>
 {
-    private readonly ReservationFacade _facade;
 
-    public ReservationController(ReservationRepository reservationFacade, ReservationFacade facade) : base(reservationFacade)
+    public ReservationController(ReservationRepository reservationRepository, ReservationFacade reservationFacade) : base(reservationRepository ,reservationFacade)
     {
-        _facade = facade;
     }
     
     [HttpGet("all")]
@@ -30,8 +36,26 @@ public class ReservationController: ControllerBase<ReservationRepository>
     }
     
     [HttpPost]
-    public async Task<ReservationEntityOutput> AddReservation(ReservationEntityInput reservation)
+    public async Task<ReservationResponse> AddReservation(ReservationEntityInput reservation)
     {
-        return await _facade.AddReservation(reservation);
+        try
+        {
+            return new ReservationResponse()
+            {
+                Reservation = await Facade.AddReservation(reservation),
+                StatusCode = HttpStatusCode.Created
+            };
+        }
+        catch (Exception e)
+        {
+            return new ReservationResponse()
+            {
+                StatusCode = HttpStatusCode.ExpectationFailed,
+                Errors = new List<string>()
+                {
+                    e.Message
+                }
+            };
+        }
     }
 }
