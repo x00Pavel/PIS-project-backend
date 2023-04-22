@@ -81,7 +81,7 @@ public class AuthController: ControllerBase<UserRepository>
                 }
             };
         
-        if (user.UserName == null || user.Email == null || user.Password == null)
+        if (user.Password == null)
             return new AuthResult()
             {
                 Result = HttpStatusCode.BadRequest,

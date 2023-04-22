@@ -55,12 +55,45 @@ public class UserRepository: RepositoryBase
         return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(result);
     }
 
-    public async Task<UserModel> UpdateUser(UserModel userModel)
+    public async Task<UserModel> UpdateUser(Guid id, UserUpdate userUpdate)
     {
-        await using var context = _dbFactory.CreateDbContext();
-        context.Users.Update(userModel);
-        await context.SaveChangesAsync();
-        return userModel;
+        // await using var context = _dbFactory.CreateDbContext();
+        // var user = await context.Users
+        //     .FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception("User not found");
+        var user = await _userManager.FindByIdAsync(id.ToString()) ?? throw new Exception("No user found");
+        if (userUpdate.UserName != null)
+        {
+            user.UserName = userUpdate.UserName;
+        }
+        if (userUpdate.Email != null)
+        {
+            user.Email = userUpdate.Email;
+        }
+        if (!string.IsNullOrEmpty(userUpdate.Password))
+        {
+            Console.WriteLine("Updating user password");
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, userUpdate.Password);
+            if (!result.Succeeded)
+            {
+                throw new Exception("Password not updated");
+            }
+        }
+        if (userUpdate.Role != null)
+        {
+            var role = await _roleManager.FindByNameAsync(userUpdate.Role);
+            if (role == null)
+            {
+                throw new Exception("Role not found");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, roles);
+            await _userManager.AddToRoleAsync(user, userUpdate.Role);
+        }
+
+        await _userManager.UpdateAsync(user);
+        // context.Users.Update(user);
+        return user;
     }
 
     public void DeleteUser(UserModel userModel)
