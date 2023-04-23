@@ -71,4 +71,21 @@ public class ActorRepository : IRepository
         await context.SaveChangesAsync();
         return _mapper.Map<ActorEntity>(actorModel);
     }
+    
+    public async Task<ActorEntity> UpdateActor(string actorName, ActorEntity actor)
+    {
+        await using var context = _factory.CreateDbContext();
+        var actorModel = GetActorModel(actorName).Result;
+        
+        if (actorModel == null)
+        {
+            throw new Exception("Actor not found");
+        }
+
+        actorModel.NameAndSurname = actor.NameAndSurname;
+
+        context.Actors.Update(actorModel);
+        await context.SaveChangesAsync();
+        return _mapper.Map<ActorEntity>(actorModel);
+    }
 }

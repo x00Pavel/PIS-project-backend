@@ -32,5 +32,11 @@ public class ActorController: ControllerBase<ActorRepository>
     {
         return await Repository.DeleteActor(actor);
     }
+
+    [HttpPut("{actorName}")]
+    public async Task<ActorEntity> UpdateActor(string actorName, [FromBody] ActorEntity actor)
+    {
+        return await Repository.UpdateActor(actorName, actor);
+    }
     
 }
