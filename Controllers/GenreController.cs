@@ -33,6 +33,12 @@ public class GenreController: ControllerBase<GenreRepository>
         return await Repository.DeleteGenre(genre);
     }
 
+    [HttpPut("{genreName}")]
+    public async Task<GenreEntity> UpdateGenre(string genreName, [FromBody] GenreEntity genre)
+    {
+        return await Repository.UpdateGenre(genreName, genre);
+    }
+
 
 
 }

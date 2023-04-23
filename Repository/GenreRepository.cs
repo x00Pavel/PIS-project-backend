@@ -64,4 +64,19 @@ public class GenreRepository: IRepository
         await context.SaveChangesAsync();
         return _mapper.Map<GenreEntity>(genreModel);
     }
+
+    public async Task<GenreEntity> UpdateGenre(string genreName, GenreEntity genre)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var origGenre = context.Genre.FirstOrDefault(x => x.Name == genreName);
+
+        if (origGenre == null)
+        {
+            throw new Exception("Genre does not exist");
+        }
+
+        origGenre.Name = genre.Name;
+        await context.SaveChangesAsync();
+        return _mapper.Map<GenreEntity>(origGenre);
+    }
 }
