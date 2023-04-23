@@ -18,6 +18,12 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     {
         return await Repository.GetVideotape(id);
     }
+
+    [HttpGet("{name}")]
+    public async Task<VideoTapeEntityOutput> GetVideotapeByName(string name)
+    {
+        return await Repository.GetVideotapeByName(name);
+    }
     
     [HttpGet("all")]
     public async Task<IEnumerable<VideoTapeEntityOutput>> GetAllVideotapes()
@@ -29,6 +35,19 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     public async Task<VideoTapeEntityOutput> AddVideoTape(VideoTapeEntityInput videoTape)
     {
         return await Repository.AddVideotape(videoTape);
+    }
+
+    // TODO Authorize
+    [HttpPut]
+    public async Task<VideoTapeEntityOutput> UpdateVideoTape(VideoTapeEntityOutput videoTape)
+    {
+        return await Repository.UpdateVideotape(videoTape);
+    }
+
+    [HttpDelete]
+    public async Task<bool> DeleteVideoTape([FromBody] Guid id)
+    {
+        return await Repository.DeleteVideoTape(id);
     }
 
 

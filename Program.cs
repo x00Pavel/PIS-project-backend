@@ -24,6 +24,7 @@ builder.Services.AddScoped<VideotapeRepository>();
 builder.Services.AddScoped<ActorRepository>();
 builder.Services.AddScoped<GenreRepository>();
 builder.Services.AddScoped<PaymentRepository>();
+builder.Services.AddScoped<StockRepository>();
 
 builder.Services.AddScoped<UserFacade>();
 builder.Services.AddScoped<ReservationFacade>();

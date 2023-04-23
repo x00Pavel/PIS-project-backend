@@ -12,6 +12,7 @@ namespace video_pujcovna_back.Models
         public DbSet<GenreModel> Genre { get; set; }
         public DbSet<ActorModel> Actors { get; set; }
         public DbSet<PaymentModel> Payment { get; set; }
+        public DbSet<StockModel> Stock { get; set; }
 
         public AppDbContext()
 		{
@@ -42,6 +43,7 @@ namespace video_pujcovna_back.Models
             modelBuilder.ApplyConfiguration(new UserRoleConfig());
             modelBuilder.ApplyConfiguration(new GenreModelConfig());
             modelBuilder.ApplyConfiguration(new ActorModelConfig());
+            modelBuilder.ApplyConfiguration(new StockModelConfig());
         }
     }
 }

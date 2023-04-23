@@ -19,6 +19,7 @@ public class VideotapeRepository: RepositoryBase
         var records= await context.VideTape
             .Include(x => x.Actors)
             .Include(x => x.Genre)
+            .Include(x => x.Stock)
             .ToListAsync();
         return _mapper.Map<IList<VideotapeModel>, IList<VideoTapeEntityOutput>>(records);
     }
@@ -28,7 +29,7 @@ public class VideotapeRepository: RepositoryBase
         var videoTapeMapped = _mapper.Map<VideotapeModel>(videoTape);
         await using var context = _dbFactory.CreateDbContext();
         var result = await context.VideTape.AddAsync(videoTapeMapped);
-        Unchanged(context, videoTapeMapped.Actors, videoTapeMapped.Genre);
+        Unchanged(context, videoTapeMapped.Actors, videoTapeMapped.Genre, videoTapeMapped.Stock);
         await context.SaveChangesAsync();
         return _mapper.Map<VideotapeModel, VideoTapeEntityOutput>(result.Entity);
     }
@@ -39,6 +40,7 @@ public class VideotapeRepository: RepositoryBase
         return await context.VideTape
             .Include(x => x.Actors)
             .Include(x => x.Genre)
+            .Include(x => x.Stock)
             .FirstAsync(x => x.Id == id);
     }
 
@@ -48,6 +50,7 @@ public class VideotapeRepository: RepositoryBase
         var videoTape = await context.VideTape
             .Include(x => x.Actors)
             .Include(x => x.Genre)
+            .Include(x => x.Stock)
             .FirstAsync(x => x.Id == id);
         return _mapper.Map<VideoTapeEntityOutput>(videoTape);
     }
@@ -58,6 +61,64 @@ public class VideotapeRepository: RepositoryBase
         return await context.VideTape
             .Include(x => x.Actors)
             .Include(x => x.Genre)
+            .Include(x => x.Stock)
             .FirstAsync(x => x.Title == sourceVideotapeName);
+    }
+
+    public async Task<VideoTapeEntityOutput> GetVideotapeByName(string sourceVideotapeName)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var videoTape = await context.VideTape
+            .Include(x => x.Actors)
+            .Include(x => x.Genre)
+            .Include(x => x.Stock)
+            .FirstAsync(x => x.Title == sourceVideotapeName);
+        return _mapper.Map<VideoTapeEntityOutput>(videoTape);
+    }
+
+    public async Task<VideoTapeEntityOutput> UpdateVideotape(VideoTapeEntityOutput videoTape)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var videoTapeModel = context.VideTape
+            .Include(x => x.Genre)
+            .Include(x => x.Actors)
+            .Include(x => x.Stock)
+            .FirstAsync(x => x.Id == videoTape.Id).Result;
+    
+        videoTapeModel.Title = videoTape.Title;
+        videoTapeModel.Description = videoTape.Description;
+        videoTapeModel.Stock = context.Stock.First(x => x.Name == videoTape.Stock.Name);
+
+        videoTapeModel.Genre.Clear();
+        foreach(var genre in videoTape.Genre)
+        {
+            var GenreModel = context.Genre.First(x => x.Name == genre.Name);
+            videoTapeModel.Genre.Add(GenreModel);
+            Unchanged(context, GenreModel);
+        }
+        
+        videoTapeModel.Actors.Clear();
+        foreach(var actor in videoTape.Actors)
+        {
+            var ActorModel = context.Actors.First(x => x.NameAndSurname == actor.NameAndSurname);
+            videoTapeModel.Actors.Add(ActorModel);
+            Unchanged(context, ActorModel);
+        }
+        context.VideTape.Update(videoTapeModel);
+        await context.SaveChangesAsync();
+        return _mapper.Map<VideotapeModel, VideoTapeEntityOutput>(videoTapeModel);
+    }
+
+    public async Task<bool> DeleteVideoTape(Guid id)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        var videoTape = await context.VideTape.FindAsync(id);
+        if (videoTape == null)
+        {
+            return false;
+        }
+        context.VideTape.Remove(videoTape);
+        await context.SaveChangesAsync();
+        return true;
     }
 }
