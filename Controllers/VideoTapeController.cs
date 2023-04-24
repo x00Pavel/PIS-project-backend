@@ -43,13 +43,15 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     [HttpPut]
     [Authorize(Roles = "admin,lead")]
     public async Task<VideoTapeEntityOutput> UpdateVideoTape(VideoTapeEntityOutput videoTape)
-    {
+    {   
+        Console.WriteLine("Hit update video tape");
+        Console.WriteLine(videoTape);
         return await Repository.UpdateVideotape(videoTape);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [Authorize(Roles = "admin,lead")]
-    public async Task<bool> DeleteVideoTape([FromBody] Guid id)
+    public async Task<bool> DeleteVideoTape(Guid id)
     {
         return await Repository.DeleteVideoTape(id);
     }
