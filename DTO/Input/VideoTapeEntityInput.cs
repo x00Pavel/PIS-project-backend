@@ -16,5 +16,5 @@ public record VideoTapeEntityInput
     public int PricePerDay { get; set; }
     public ICollection<GenreEntity> Genre { get; init; }
     public ICollection<ActorEntity> Actors { get; init; }
-    public string StockName { get; init; }
+    public StockEntityReduced stock { get; init; }
 }

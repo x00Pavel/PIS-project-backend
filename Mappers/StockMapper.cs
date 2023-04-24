@@ -11,5 +11,7 @@ public class StockMapper: Profile
     {
         CreateMap<StockModel, StockEntityOutput>();
         CreateMap<StockEntityInput, StockModel>();
+        CreateMap<StockEntityReduced, StockModel>();
+        CreateMap<StockModel, StockEntityReduced>();
     }
 }
