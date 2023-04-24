@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,9 +11,11 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230423084308_StockModel")]
+    partial class StockModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -388,14 +391,6 @@ namespace video_pujcovna_back.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stock");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("30b4eff8-93e7-44aa-8eb6-f4ad3e7a414a"),
-                            Description = "Main stock description",
-                            Name = "Main stock"
-                        });
                 });
 
             modelBuilder.Entity("video_pujcovna_back.Models.UserModel", b =>
@@ -410,9 +405,6 @@ namespace video_pujcovna_back.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -470,7 +462,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ff16c75-5ab9-4241-b4ca-88c6a9bf0189",
+                            ConcurrencyStamp = "b27f5822-ebf9-46b6-8545-60365b33c2b5",
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -482,7 +474,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e1ca8a91-70aa-44aa-8e6e-e4ac50d9dbba",
+                            ConcurrencyStamp = "e348de5e-13a1-4bda-96b9-49d7cc42abb3",
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -494,7 +486,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd8834aa-b42e-4762-9651-9da7a9c723e6",
+                            ConcurrencyStamp = "6414b7d7-760b-4f3f-bcb5-cac2d10616d2",
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -506,7 +498,7 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "51b96487-7874-423c-af53-e8a3c4da9c84",
+                            ConcurrencyStamp = "06ee8ebb-2d34-4b01-9150-153ddb7f2a08",
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -522,26 +514,7 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Count")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CountryOfOrigin")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Director")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Language")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -551,9 +524,6 @@ namespace video_pujcovna_back.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("year")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

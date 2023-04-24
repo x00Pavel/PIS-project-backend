@@ -6,7 +6,6 @@ using video_pujcovna_back.Repository;
 namespace video_pujcovna_back.Controllers;
 
 [ApiController]
-[Authorize(Roles = "admin,lead,employee")]
 [Route("api/[controller]")]
 public class GenreController: ControllerBase<GenreRepository>
 {
@@ -15,9 +14,30 @@ public class GenreController: ControllerBase<GenreRepository>
     }
 
     [HttpGet("all")]
-    public Task<ICollection<GenreEntity>> GetAllGenres()
+    public async Task<ICollection<GenreEntity>> GetAllGenres()
     {
-        return Repository.GetAllGenres();
+        return await Repository.GetAllGenres();
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "admin,lead")]
+    public async Task<GenreEntity> AddGenre(GenreEntity genre)
+    {
+        return await Repository.AddGenre(genre);
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "admin,lead")]
+    public async Task<GenreEntity> DeleteGenre(GenreEntity genre)
+    {
+        return await Repository.DeleteGenre(genre);
+    }
+
+    [HttpPut("{genreName}")]
+    [Authorize(Roles = "admin,lead")]
+    public async Task<GenreEntity> UpdateGenre(string genreName, [FromBody] GenreEntity genre)
+    {
+        return await Repository.UpdateGenre(genreName, genre);
     }
 
 
