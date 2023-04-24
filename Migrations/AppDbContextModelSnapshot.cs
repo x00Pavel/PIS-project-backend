@@ -551,6 +551,9 @@ namespace video_pujcovna_back.Migrations
                     b.Property<int>("PricePerDay")
                         .HasColumnType("int");
 
+                    b.Property<int>("PricePerDay")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("StockId")
                         .HasColumnType("char(36)");
 
@@ -561,7 +564,12 @@ namespace video_pujcovna_back.Migrations
                     b.Property<int>("year")
                         .HasColumnType("int");
 
+                    b.Property<int>("year")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StockId");
 
                     b.HasIndex("StockId");
 
