@@ -35,7 +35,7 @@ public class VideotapeStockMapper : IValueResolver<VideoTapeEntityInput, Videota
     public StockModel Resolve(VideoTapeEntityInput source, VideotapeModel destination, StockModel destMember,
         ResolutionContext context)
     {
-        return repository.GetStockModelByName(source.StockName).Result;
+        return repository.GetStockModelByName(source.stock.Name).Result;
     }
 }
 public class VideoTapeMapper: Profile
