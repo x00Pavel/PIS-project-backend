@@ -87,6 +87,13 @@ public class VideotapeRepository: RepositoryBase
     
         videoTapeModel.Title = videoTape.Title;
         videoTapeModel.Description = videoTape.Description;
+        videoTapeModel.Duration = videoTape.Duration;
+        videoTapeModel.CountryOfOrigin = videoTape.CountryOfOrigin;
+        videoTapeModel.Language = videoTape.Language;
+        videoTapeModel.Count = videoTape.Count;
+        videoTapeModel.Director = videoTape.Director;
+        videoTapeModel.year = videoTape.year;
+        videoTapeModel.PricePerDay = videoTape.PricePerDay;
         videoTapeModel.Stock = context.Stock.First(x => x.Name == videoTape.Stock.Name);
 
         videoTapeModel.Genre.Clear();
