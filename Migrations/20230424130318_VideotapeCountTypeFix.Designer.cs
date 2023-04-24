@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,9 +11,11 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230424130318_VideotapeCountTypeFix")]
+    partial class VideotapeCountTypeFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -551,9 +554,6 @@ namespace video_pujcovna_back.Migrations
                     b.Property<int>("PricePerDay")
                         .HasColumnType("int");
 
-                    b.Property<int>("PricePerDay")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("StockId")
                         .HasColumnType("char(36)");
 
@@ -564,12 +564,7 @@ namespace video_pujcovna_back.Migrations
                     b.Property<int>("year")
                         .HasColumnType("int");
 
-                    b.Property<int>("year")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StockId");
 
                     b.HasIndex("StockId");
 
