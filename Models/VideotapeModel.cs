@@ -6,6 +6,7 @@ public record VideotapeModel : BaseModel
 {   
     [Required]
     public string Title { get; set; }
+    
     [Required]
     public string Description { get; set; }
     public int Duration { get; set; }

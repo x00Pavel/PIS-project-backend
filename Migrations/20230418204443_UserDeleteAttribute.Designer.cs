@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using video_pujcovna_back.Models;
 
@@ -10,9 +11,11 @@ using video_pujcovna_back.Models;
 namespace video_pujcovna_back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230418204443_UserDeleteAttribute")]
+    partial class UserDeleteAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,33 +374,6 @@ namespace video_pujcovna_back.Migrations
                         });
                 });
 
-            modelBuilder.Entity("video_pujcovna_back.Models.StockModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Stock");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("30b4eff8-93e7-44aa-8eb6-f4ad3e7a414a"),
-                            Description = "Main stock description",
-                            Name = "Main stock"
-                        });
-                });
-
             modelBuilder.Entity("video_pujcovna_back.Models.UserModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -470,7 +446,8 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("69c5507d-401b-4998-ab4f-d035d5b2903c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ff16c75-5ab9-4241-b4ca-88c6a9bf0189",
+                            ConcurrencyStamp = "ad9cc2cb-f585-4024-9619-7838f6a2eb99",
+                            Deleted = false,
                             Email = "honza@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -482,7 +459,8 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("294c5b1d-7d26-4a6f-a8a5-6f02446f4550"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e1ca8a91-70aa-44aa-8e6e-e4ac50d9dbba",
+                            ConcurrencyStamp = "171810dd-2a0f-4b6f-9151-ae712da98fe3",
+                            Deleted = false,
                             Email = "jan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -494,7 +472,8 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("63df0b47-06bb-45a4-8826-790231938dde"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd8834aa-b42e-4762-9651-9da7a9c723e6",
+                            ConcurrencyStamp = "9acf2503-0238-40c0-b525-b91889446388",
+                            Deleted = false,
                             Email = "pavel@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -506,7 +485,8 @@ namespace video_pujcovna_back.Migrations
                         {
                             Id = new Guid("b8db233c-63c3-4148-bc10-78a48ce0b2bc"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "51b96487-7874-423c-af53-e8a3c4da9c84",
+                            ConcurrencyStamp = "97a20cd8-cce1-47bf-9aa7-99e648ac8904",
+                            Deleted = false,
                             Email = "petr@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -522,42 +502,15 @@ namespace video_pujcovna_back.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Count")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CountryOfOrigin")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<string>("Director")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("StockId")
-                        .HasColumnType("char(36)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("year")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StockId");
 
                     b.ToTable("VideTape");
                 });
@@ -668,22 +621,6 @@ namespace video_pujcovna_back.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Videotape");
-                });
-
-            modelBuilder.Entity("video_pujcovna_back.Models.VideotapeModel", b =>
-                {
-                    b.HasOne("video_pujcovna_back.Models.StockModel", "Stock")
-                        .WithMany("Videotapes")
-                        .HasForeignKey("StockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Stock");
-                });
-
-            modelBuilder.Entity("video_pujcovna_back.Models.StockModel", b =>
-                {
-                    b.Navigation("Videotapes");
                 });
 
             modelBuilder.Entity("video_pujcovna_back.Models.UserModel", b =>

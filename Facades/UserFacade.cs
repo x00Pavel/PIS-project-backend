@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using video_pujcovna_back.DTO.Input;
+using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Models;
 using video_pujcovna_back.Repository;
 
@@ -10,11 +12,13 @@ public class UserFacade
 
     private readonly UserManager<UserModel> _userManager;
     private readonly UserRepository _userRepository;
-    
-    public UserFacade(UserManager<UserModel> userManager, UserRepository userRepository)
+    private readonly IMapper _mapper;
+
+    public UserFacade(UserManager<UserModel> userManager, UserRepository userRepository, IMapper mapper)
     {
         _userManager = userManager;
         _userRepository = userRepository;
+        _mapper = mapper;
     }
 
     public async Task<UserModel> CreateUser(UserEntityInput user)
@@ -42,5 +46,11 @@ public class UserFacade
     public async Task<UserModel?> GetUserByUserName(string userUserName)
     {
         return await _userRepository.GetUserByUserName(userUserName);
+    }
+
+    public async Task<UserEntityOutput> UpdateUser(Guid id, UserUpdate userUpdate)
+    {
+        var result = await _userRepository.UpdateUser(id, userUpdate);
+        return _mapper.Map<UserModel, UserEntityOutput>(result);
     }
 }

@@ -1,6 +1,5 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using video_pujcovna_back.Configs;
 using video_pujcovna_back.Facades;
@@ -25,6 +24,7 @@ builder.Services.AddScoped<ActorRepository>();
 builder.Services.AddScoped<GenreRepository>();
 builder.Services.AddScoped<PaymentRepository>();
 builder.Services.AddScoped<StockRepository>();
+builder.Services.AddScoped<RoleRepository>();
 
 builder.Services.AddScoped<UserFacade>();
 builder.Services.AddScoped<ReservationFacade>();
@@ -83,6 +83,7 @@ app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

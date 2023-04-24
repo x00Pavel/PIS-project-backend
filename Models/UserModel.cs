@@ -10,4 +10,7 @@ public class UserModel : IdentityUser<Guid>
 {
     // Fields such as name, email, password hash etc. are inherited from IdentityUser
     public ICollection<ReservationModel>? Reservations { get; set; }
+
+    public bool Deleted { get; set; } = false;
+
 }
