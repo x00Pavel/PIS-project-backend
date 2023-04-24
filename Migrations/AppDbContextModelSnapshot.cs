@@ -534,6 +534,14 @@ namespace video_pujcovna_back.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Count")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CountryOfOrigin")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -562,7 +570,12 @@ namespace video_pujcovna_back.Migrations
                     b.Property<int>("year")
                         .HasColumnType("int");
 
+                    b.Property<int>("year")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StockId");
 
                     b.HasIndex("StockId");
 
