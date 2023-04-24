@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
@@ -32,6 +33,7 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     }
     
     [HttpPost]
+    [Authorize(Roles = "admin,lead")]
     public async Task<VideoTapeEntityOutput> AddVideoTape(VideoTapeEntityInput videoTape)
     {
         return await Repository.AddVideotape(videoTape);
@@ -39,12 +41,14 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
 
     // TODO Authorize
     [HttpPut]
+    [Authorize(Roles = "admin,lead")]
     public async Task<VideoTapeEntityOutput> UpdateVideoTape(VideoTapeEntityOutput videoTape)
     {
         return await Repository.UpdateVideotape(videoTape);
     }
 
     [HttpDelete]
+    [Authorize(Roles = "admin,lead")]
     public async Task<bool> DeleteVideoTape([FromBody] Guid id)
     {
         return await Repository.DeleteVideoTape(id);

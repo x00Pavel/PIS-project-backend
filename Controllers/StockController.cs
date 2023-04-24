@@ -7,6 +7,7 @@ namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "admin")]
 
 public class StockController : ControllerBase<StockRepository>
 {

@@ -34,6 +34,7 @@ public class GenreController: ControllerBase<GenreRepository>
     }
 
     [HttpPut("{genreName}")]
+    [Authorize(Roles = "admin,lead")]
     public async Task<GenreEntity> UpdateGenre(string genreName, [FromBody] GenreEntity genre)
     {
         return await Repository.UpdateGenre(genreName, genre);
