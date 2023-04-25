@@ -488,3 +488,6 @@ mysql_db/
 .DS_Store
 
 *.sln
+
+# Image files
+images/*
