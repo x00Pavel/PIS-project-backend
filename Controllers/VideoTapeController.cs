@@ -56,5 +56,24 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
         return await Repository.DeleteVideoTape(id);
     }
 
+    [HttpPost("image")]
+    //[Authorize(Roles = "admin,lead")]
+    public async Task<IActionResult> UploadImage(Guid id, IFormFile file)
+    {
+        return await Repository.UploadImage(id, file);
+    }
+
+    [HttpGet("image")]
+    public async Task<IActionResult> GetImage(Guid id)
+    {
+        return await Repository.GetImage(id);
+    }
+
+    [HttpDelete("image")]
+    public async Task<IActionResult> DeleteImage(Guid id)
+    {
+        return await Repository.DeleteImage(id);
+    }
+
 
 }

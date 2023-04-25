@@ -19,4 +19,6 @@ public record VideotapeModel : BaseModel
     public ICollection<GenreModel> Genre { get; set; }
     public ICollection<ActorModel> Actors { get; set; }
     public StockModel Stock { get; set; }
+    public string? ImagePath { get; set; }
+    public int Rating { get; set; }
 }
