@@ -32,7 +32,7 @@ namespace video_pujcovna_back.Models
                 .Build();
 
             var connection_str = conf.GetConnectionString("videopujcovna");
-            optionsBuilder.UseMySql(connection_str, ServerVersion.AutoDetect(connection_str));
+            optionsBuilder.UseMySql(connection_str, ServerVersion.AutoDetect(connection_str)).EnableDetailedErrors();
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

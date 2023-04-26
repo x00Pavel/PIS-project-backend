@@ -34,7 +34,7 @@ public class ReservationVideotapeMapper : IValueResolver<ReservationEntityInput,
 
     public VideotapeModel Resolve(ReservationEntityInput source, ReservationModel destination, VideotapeModel destMember, ResolutionContext context)
     {
-        return _videotapeRepository.GetVideotapeModelByName(source.VideotapeName).Result;
+        return _videotapeRepository.GetVideotapeById(source.VideotapeId).Result;
     }
 }
 

@@ -54,8 +54,12 @@ public class ReservationRepository: RepositoryBase
     public async Task<IEnumerable<ReservationEntityOutput>> GetAllReservations()
     {
         await using var context = _dbFactory.CreateDbContext();
-        var reservations = await context.Reservations.ToListAsync();
-        return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(reservations);
+        var reservations = await context.Reservations
+            .Include(u => u.User)
+            .Include(u => u.Videotape)
+            .Include(u => u.Payment)
+            .ToListAsync();
+        return  _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(reservations);
     }
 
     public async Task<IEnumerable<ReservationModel>> GetCollisions(ReservationModel reservationModel)

@@ -17,14 +17,10 @@ public class ReservationFacade : FacadeBase<ReservationRepository>
         
         var reservationModel = Mapper.Map<ReservationModel>(reservation);
         var collisions = await Repository.GetCollisions(reservationModel);
-        
-        Console.WriteLine(string.Join(", ", collisions.Select(c => c.Id)));
-        
-        if (collisions.Any())
-        {
-            throw new Exception("Reservation collision");
-        }
-        
-        return await Repository.AddReservation(reservationModel);
+
+        var reservationModels = collisions as ReservationModel[] ?? collisions.ToArray();
+        if (!reservationModels.Any()) return await Repository.AddReservation(reservationModel);
+        throw new Exception("Reservation collision");
+
     }
 }
