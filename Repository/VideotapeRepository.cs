@@ -140,18 +140,20 @@ public class VideotapeRepository: RepositoryBase
         return true;
     }
 
-    public async Task<IActionResult> UploadImage(VideotapeModel videotape, string path)
+    public async Task<IActionResult> UploadImage(Guid id, string path)
     {
         await using var context = _dbFactory.CreateDbContext();
+        var videotape = await context.VideTape.FindAsync(id);
         videotape.ImagePath = path;
         context.VideTape.Update(videotape);
         await context.SaveChangesAsync();
         return new OkObjectResult("Image uploaded");
     }
 
-    public async Task<IActionResult> DeleteImage(VideotapeModel videotape)
+    public async Task<IActionResult> DeleteImage(Guid id)
     {
         await using var context = _dbFactory.CreateDbContext();
+        var videotape = await context.VideTape.FindAsync(id);
         videotape.ImagePath = null;
         context.VideTape.Update(videotape);
         await context.SaveChangesAsync();
