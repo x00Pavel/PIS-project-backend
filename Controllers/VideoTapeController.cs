@@ -15,7 +15,7 @@ public class VideoTapeController: ControllerBase<VideotapeRepository, VideoTapeF
     {
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<VideoTapeEntityOutput> GetVideotape(Guid id)
     {
         return await Repository.GetVideotape(id);
