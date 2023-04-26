@@ -39,7 +39,7 @@ public class VideoTapeFacade : FacadeBase<VideotapeRepository>
         }
         using var stream = new FileStream(path, FileMode.Create);
         await file.CopyToAsync(stream);
-        return await Repository.UploadImage(videotape, path);
+        return await Repository.UploadImage(id, path);
     }
 
     public async Task<IActionResult> GetImage(Guid id)
@@ -71,6 +71,6 @@ public class VideoTapeFacade : FacadeBase<VideotapeRepository>
             return new NotFoundResult();
         }
         System.IO.File.Delete(videotape.ImagePath);
-        return await Repository.DeleteImage(videotape);
+        return await Repository.DeleteImage(id);
     }
 }
