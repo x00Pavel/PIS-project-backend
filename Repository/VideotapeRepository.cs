@@ -130,79 +130,20 @@ public class VideotapeRepository: RepositoryBase
         return true;
     }
 
-    public async Task<IActionResult> UploadImage(Guid id, IFormFile file)
+    public async Task<IActionResult> UploadImage(VideotapeModel videotape, string path)
     {
         await using var context = _dbFactory.CreateDbContext();
-        var videoTape = await context.VideTape.FindAsync(id);
-        if (videoTape == null)
-        {
-            return new NotFoundObjectResult("VideoTape not found");
-        }
-        // Check if videotape has image
-        if (videoTape.ImagePath != null)
-        {
-            var existing_path = Path.Combine(Directory.GetCurrentDirectory(), "images", id.ToString() + Path.GetExtension(file.FileName));
-            if (System.IO.File.Exists(existing_path))
-            {
-                System.IO.File.Delete(existing_path);
-            }
-        }
-
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "images", id.ToString() + Path.GetExtension(file.FileName));
-        var extension = Path.GetExtension(path).Replace(".", "");
-        if (extension != "jpg" && extension != "png" && extension != "jpeg")
-        {
-            return new BadRequestObjectResult("Wrong file extension");
-        }
-        
-        var folder = Path.GetDirectoryName(path);
-        if (!Directory.Exists(folder))
-        {
-            Directory.CreateDirectory(folder);
-        }
-        await using var stream = new FileStream(path, FileMode.Create);
-        await file.CopyToAsync(stream);
-        videoTape.ImagePath = path;
-        context.VideTape.Update(videoTape);
+        videotape.ImagePath = path;
+        context.VideTape.Update(videotape);
         await context.SaveChangesAsync();
         return new OkObjectResult("Image uploaded");
     }
 
-    public async Task<IActionResult> GetImage(Guid id)
+    public async Task<IActionResult> DeleteImage(VideotapeModel videotape)
     {
         await using var context = _dbFactory.CreateDbContext();
-        var videoTape = await context.VideTape.FindAsync(id);
-        if (videoTape == null || videoTape.ImagePath == null)
-        {
-            return new NotFoundResult();
-        }
-        var path = videoTape.ImagePath;
-        if (!System.IO.File.Exists(path))
-        {
-            return new NotFoundResult();
-        }
-        var extension = Path.GetExtension(path).Replace(".", "");
-        var stream = new FileStream(path, FileMode.Open);
-        var contentType = $"image/{extension}";
-        return new FileStreamResult(stream, contentType);
-    }
-
-    public async Task<IActionResult> DeleteImage(Guid id)
-    {
-        await using var context = _dbFactory.CreateDbContext();
-        var videoTape = await context.VideTape.FindAsync(id);
-        if (videoTape == null || videoTape.ImagePath == null)
-        {
-            return new NotFoundResult();
-        }
-        var path = videoTape.ImagePath;
-        if (!System.IO.File.Exists(path))
-        {
-            return new NotFoundResult();
-        }
-        File.Delete(path);
-        videoTape.ImagePath = null;
-        context.VideTape.Update(videoTape);
+        videotape.ImagePath = null;
+        context.VideTape.Update(videotape);
         await context.SaveChangesAsync();
         return new OkObjectResult("Image deleted");
     }
