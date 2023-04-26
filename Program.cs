@@ -28,6 +28,7 @@ builder.Services.AddScoped<RoleRepository>();
 
 builder.Services.AddScoped<UserFacade>();
 builder.Services.AddScoped<ReservationFacade>();
+builder.Services.AddScoped<VideoTapeFacade>();
 
 builder.Services.AddDbContext<AppDbContext>();
 

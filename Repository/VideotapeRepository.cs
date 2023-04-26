@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
@@ -127,5 +128,23 @@ public class VideotapeRepository: RepositoryBase
         context.VideTape.Remove(videoTape);
         await context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<IActionResult> UploadImage(VideotapeModel videotape, string path)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        videotape.ImagePath = path;
+        context.VideTape.Update(videotape);
+        await context.SaveChangesAsync();
+        return new OkObjectResult("Image uploaded");
+    }
+
+    public async Task<IActionResult> DeleteImage(VideotapeModel videotape)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        videotape.ImagePath = null;
+        context.VideTape.Update(videotape);
+        await context.SaveChangesAsync();
+        return new OkObjectResult("Image deleted");
     }
 }

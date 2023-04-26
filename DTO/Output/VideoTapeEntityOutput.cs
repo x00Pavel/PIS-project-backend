@@ -17,4 +17,5 @@ public record VideoTapeEntityOutput
     public ICollection<GenreEntity> Genre { get; init; }
     public ICollection<ActorEntity> Actors { get; init; }
     public StockEntityReduced Stock { get; set; }
+    public int Rating { get; set; }
 }

@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Repository;
+using video_pujcovna_back.Facades;
 
 namespace video_pujcovna_back.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class VideoTapeController: ControllerBase<VideotapeRepository>
+public class VideoTapeController: ControllerBase<VideotapeRepository, VideoTapeFacade>
 {
-    public VideoTapeController(VideotapeRepository repository) : base(repository)
+    public VideoTapeController(VideotapeRepository repository, VideoTapeFacade facade) : base(repository, facade)
     {
     }
     
@@ -54,6 +55,25 @@ public class VideoTapeController: ControllerBase<VideotapeRepository>
     public async Task<bool> DeleteVideoTape(Guid id)
     {
         return await Repository.DeleteVideoTape(id);
+    }
+
+    [HttpPost("image")]
+    //[Authorize(Roles = "admin,lead")]
+    public async Task<IActionResult> UploadImage(Guid id, IFormFile file)
+    {
+        return await Facade.UploadImage(id, file);
+    }
+
+    [HttpGet("image")]
+    public async Task<IActionResult> GetImage(Guid id)
+    {
+        return await Facade.GetImage(id);
+    }
+
+    [HttpDelete("image")]
+    public async Task<IActionResult> DeleteImage(Guid id)
+    {
+        return await Facade.DeleteImage(id);
     }
 
 
