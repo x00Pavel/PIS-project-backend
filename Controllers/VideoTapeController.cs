@@ -58,7 +58,7 @@ public class VideoTapeController: ControllerBase<VideotapeRepository, VideoTapeF
     }
 
     [HttpPost("image")]
-    //[Authorize(Roles = "admin,lead")]
+    [Authorize(Roles = "admin,lead")]
     public async Task<IActionResult> UploadImage(Guid id, IFormFile file)
     {
         return await Facade.UploadImage(id, file);
@@ -71,6 +71,7 @@ public class VideoTapeController: ControllerBase<VideotapeRepository, VideoTapeF
     }
 
     [HttpDelete("image")]
+    [Authorize(Roles = "admin,lead")]
     public async Task<IActionResult> DeleteImage(Guid id)
     {
         return await Facade.DeleteImage(id);
