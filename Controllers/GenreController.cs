@@ -26,11 +26,11 @@ public class GenreController: ControllerBase<GenreRepository>
         return await Repository.AddGenre(genre);
     }
 
-    [HttpDelete]
+    [HttpDelete("{genreName}")]
     [Authorize(Roles = "admin,lead")]
-    public async Task<GenreEntity> DeleteGenre(GenreEntity genre)
+    public async Task<GenreEntity> DeleteGenre(string genreName)
     {
-        return await Repository.DeleteGenre(genre);
+        return await Repository.DeleteGenre(genreName);
     }
 
     [HttpPut("{genreName}")]

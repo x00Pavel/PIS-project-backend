@@ -47,14 +47,20 @@ public class ReservationRepository: RepositoryBase
     public async Task<ReservationEntityOutput> GetReservation(Guid id)
     {
         await using var context = _dbFactory.CreateDbContext();
-        var reservation = await context.Reservations.FindAsync(id) ?? throw new Exception("Reservation not found");
+        var reservation = await context.Reservations
+            .Include(x => x.Videotape)
+            .Include(x => x.Payment)
+            .FirstAsync(x => x.Id == id) ?? throw new Exception("Reservation not found");
         return _mapper.Map<ReservationEntityOutput>(reservation);
     }
 
     public async Task<IEnumerable<ReservationEntityOutput>> GetAllReservations()
     {
         await using var context = _dbFactory.CreateDbContext();
-        var reservations = await context.Reservations.ToListAsync();
+        var reservations = await context.Reservations
+            .Include(x => x.Videotape)
+            .Include(x => x.Payment)
+            .ToListAsync();
         return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(reservations);
     }
 

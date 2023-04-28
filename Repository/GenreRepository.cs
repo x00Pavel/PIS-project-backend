@@ -50,12 +50,12 @@ public class GenreRepository: IRepository
         return _mapper.Map<GenreEntity>(genreModel);
     }
 
-    public async Task<GenreEntity> DeleteGenre(GenreEntity genre)
+    public async Task<GenreEntity> DeleteGenre(string genreName)
     {
         await using var context = _dbFactory.CreateDbContext();
-        var genreModel = _mapper.Map<GenreModel>(genre);
+        var genreModel = await context.Genre.FirstOrDefaultAsync(x => x.Name == genreName);
 
-        if (!await context.Genre.AnyAsync(x => x.Name == genreModel.Name))
+        if (genreModel == null)
         {
             throw new Exception("Genre does not exist");
         }

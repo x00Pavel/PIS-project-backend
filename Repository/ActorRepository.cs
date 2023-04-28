@@ -57,12 +57,12 @@ public class ActorRepository : IRepository
         return _mapper.Map<ActorEntity>(actorModel);
     }
 
-    public async Task<ActorEntity> DeleteActor(ActorEntity actor)
+    public async Task<ActorEntity> DeleteActor(string actorName)
     {
         await using var context = _factory.CreateDbContext();
-        var actorModel = _mapper.Map<ActorModel>(actor);
+        var actorModel = context.Actors.FirstAsync(x => x.NameAndSurname == actorName).Result;
         
-        if (!await context.Actors.AnyAsync(x => x.NameAndSurname == actorModel.NameAndSurname))
+        if (actorModel == null)
         {
             throw new Exception("Actor not found");
         }

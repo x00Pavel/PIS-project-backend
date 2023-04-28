@@ -26,14 +26,15 @@ public class ActorController: ControllerBase<ActorRepository>
         return await Repository.AddActor(actor);
     }
 
-    [HttpDelete]
+    [HttpDelete("{actorName}")]
     [Authorize(Roles = "admin,lead")]
-    public async Task<ActorEntity> DeleteActor(ActorEntity actor)
+    public async Task<ActorEntity> DeleteActor(string actorName)
     {
-        return await Repository.DeleteActor(actor);
+        return await Repository.DeleteActor(actorName);
     }
 
     [HttpPut("{actorName}")]
+    [Authorize(Roles = "admin,lead")]
     public async Task<ActorEntity> UpdateActor(string actorName, [FromBody] ActorEntity actor)
     {
         return await Repository.UpdateActor(actorName, actor);
