@@ -21,4 +21,5 @@ public record VideotapeModel : BaseModel
     public StockModel Stock { get; set; }
     public string? ImagePath { get; set; }
     public int Rating { get; set; }
+    public bool Deleted { get; set; } = false;
 }

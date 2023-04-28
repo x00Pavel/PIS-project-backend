@@ -18,6 +18,7 @@ public class VideotapeRepository: RepositoryBase
     {
         await using var context = _dbFactory.CreateDbContext();
         var records= await context.VideTape
+            .Where(x=> x.Deleted == false)
             .Include(x => x.Actors)
             .Include(x => x.Genre)
             .Include(x => x.Stock)
@@ -49,6 +50,7 @@ public class VideotapeRepository: RepositoryBase
     {
         await using var context = _dbFactory.CreateDbContext();
         var videoTape = await context.VideTape
+            .Where(x=> x.Deleted == false)
             .Include(x => x.Actors)
             .Include(x => x.Genre)
             .Include(x => x.Stock)
@@ -91,6 +93,7 @@ public class VideotapeRepository: RepositoryBase
     {
         await using var context = _dbFactory.CreateDbContext();
         var videoTapeModel = context.VideTape
+            .Where(x => x.Deleted == false)
             .Include(x => x.Genre)
             .Include(x => x.Actors)
             .Include(x => x.Stock)
@@ -135,7 +138,7 @@ public class VideotapeRepository: RepositoryBase
         {
             return false;
         }
-        context.VideTape.Remove(videoTape);
+        videoTape.Deleted = true;
         await context.SaveChangesAsync();
         return true;
     }
@@ -160,3 +163,4 @@ public class VideotapeRepository: RepositoryBase
         return new OkObjectResult("Image deleted");
     }
 }
+
