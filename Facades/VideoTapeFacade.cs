@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace video_pujcovna_back.Facades;
 
 public class VideoTapeFacade : FacadeBase<VideotapeRepository>
-{
+{   
+    private FileStream noImage = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "images", "no-image.png"), FileMode.Open);
     public VideoTapeFacade(VideotapeRepository repository, IMapper mapper) : base(repository, mapper)
     {
     }
@@ -43,7 +44,11 @@ public class VideoTapeFacade : FacadeBase<VideotapeRepository>
     }
 
     public async Task<IActionResult> GetImage(Guid id)
-    {
+    {   
+        if (id == Guid.Empty)
+        {
+            return new FileStreamResult(noImage, "image/png");
+        }
         var videotape = await Repository.GetVideotapeModel(id);
         if (videotape == null || videotape.ImagePath == null)
         {
