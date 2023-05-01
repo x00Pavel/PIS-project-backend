@@ -22,5 +22,5 @@ public record ReservationModel: BaseModel
     public Guid PaymentId { get; set; }
     public PaymentModel Payment { get; set; }
 
-    public string State { get; set; } = "Initial";
+    public string State { get; set; } = "initial";
 }

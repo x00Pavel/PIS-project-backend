@@ -46,8 +46,8 @@ public class ReservationMapper: Profile
         CreateMap<ReservationModel, ReservationEntityOutput>()
             .ForMember(dst => dst.VideotapeName,
                 opt => opt.MapFrom(src => src.Videotape.Title))
-            .ForMember(dst => dst.PaymentState,
-                opt => opt.MapFrom(src => src.Payment.Paid ? "Paid" : "Not paid"));
+            .ForMember(dst => dst.Payed,
+                opt => opt.MapFrom(src => src.Payment.Paid));
         CreateMap<ReservationEntityInput, ReservationModel>()
             .ForMember(opt => opt.User,
                 opt => opt.MapFrom<ReservationUserMapper>())

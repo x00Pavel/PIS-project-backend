@@ -4,6 +4,7 @@ using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Repository;
 using video_pujcovna_back.Facades;
+using JsonResult = video_pujcovna_back.Repository.JsonResult;
 
 namespace video_pujcovna_back.Controllers;
 
@@ -24,9 +25,26 @@ public class ReservationController: ControllerBase<ReservationRepository, Reserv
     }
     
     [HttpGet("all")]
-    public async Task<IEnumerable<ReservationEntityOutput>> GetAllReservations()
+    public async Task<JsonResult> GetAllReservations()
     {
-        return await Repository.GetAllReservations();
+        try
+        {
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.OK,
+                Data = await Repository.GetAllReservations()
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new JsonResult()
+            {   
+                
+                Errors = new[] { "Error while getting all reservations" },
+                Status = HttpStatusCode.ExpectationFailed
+            };
+        }
     }
     
     [HttpGet("{id}")]
@@ -36,25 +54,48 @@ public class ReservationController: ControllerBase<ReservationRepository, Reserv
     }
     
     [HttpPost]
-    public async Task<ReservationResponse> AddReservation(ReservationEntityInput reservation)
+    public async Task<JsonResult> AddReservation(ReservationEntityInput reservation)
     {
         try
         {
-            return new ReservationResponse()
+            return new JsonResult()
             {
-                Reservation = await Facade.AddReservation(reservation),
-                StatusCode = HttpStatusCode.Created
+                Data = await Facade.AddReservation(reservation),
+                Status = HttpStatusCode.Created
             };
         }
         catch (Exception e)
-        {
-            return new ReservationResponse()
+        {   
+            Console.Error.WriteLine(e);
+            return new JsonResult()
             {
-                StatusCode = HttpStatusCode.ExpectationFailed,
+                Status = HttpStatusCode.ExpectationFailed,
                 Errors = new List<string>()
                 {
                     e.Message
                 }
+            };
+        }
+    }
+
+    [HttpPut]
+    public async Task<JsonResult> UpdateReservation(ReservationEntityOutput reservation)
+    {
+        try
+        {
+            return new JsonResult
+            {
+                Data = await Facade.UpdateReservation(reservation),
+                Status = HttpStatusCode.OK
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new JsonResult
+            {
+                Errors = new[] { "Error while updating reservations", e.Message },
+                Status = HttpStatusCode.ExpectationFailed
             };
         }
     }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using video_pujcovna_back.Repository;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
@@ -18,13 +19,21 @@ public class ReservationFacade : FacadeBase<ReservationRepository>
         var reservationModel = Mapper.Map<ReservationModel>(reservation);
         var collisions = await Repository.GetCollisions(reservationModel);
         
-        Console.WriteLine(string.Join(", ", collisions.Select(c => c.Id)));
-        
         if (collisions.Any())
         {
             throw new Exception("Reservation collision");
         }
         
         return await Repository.AddReservation(reservationModel);
+    }
+
+    public async Task<ReservationEntityOutput> UpdateReservation(ReservationEntityOutput reservationUpdate)
+    {
+        var collisions = await Repository.GetCollisions(reservationUpdate);
+        if (collisions.Any())
+        {
+            throw new Exception("Collision with other reservations");
+        }
+        return await Repository.UpdateReservation(reservationUpdate);
     }
 }

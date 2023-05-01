@@ -30,9 +30,25 @@ public class VideoTapeController: ControllerBase<VideotapeRepository, VideoTapeF
     }
     
     [HttpGet("all")]
-    public async Task<IEnumerable<VideoTapeEntityOutput>> GetAllVideotapes()
+    public async Task<JsonResult> GetAllVideotapes()
     {
-        return await Repository.GetAllVideotapes();
+        try
+        {
+            return new JsonResult()
+            {
+                Data = await Repository.GetAllVideotapes(),
+                Status = HttpStatusCode.OK
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.ExpectationFailed,
+                Errors = new[] { "Error while getting all videotapes" }
+            };
+        }
     }
     
     [HttpPost]

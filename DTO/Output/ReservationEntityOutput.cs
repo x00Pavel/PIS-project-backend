@@ -9,5 +9,5 @@ public class ReservationEntityOutput
     public DateTime DateTo { get; set; }
     public DateTime Timestamp { get; set; }
     public string State { get; set; }
-    public string PaymentState { get; set; }
+    public bool Payed { get; set; }
 }

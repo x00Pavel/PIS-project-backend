@@ -75,7 +75,19 @@ public class ReservationRepository: RepositoryBase
                 (reservationModel.DateFrom <= r.DateTo && r.DateTo <= reservationModel.DateTo) ||
                 (r.DateFrom <= reservationModel.DateFrom && reservationModel.DateTo <= r.DateTo))
             .ToListAsync();
-        
+    }
+    
+    public async Task<IEnumerable<ReservationModel>> GetCollisions(ReservationEntityOutput reservationEntity)
+    {
+        await using var context = _dbFactory.CreateDbContext();
+        // invert following condition
+        return await context.Reservations
+            .Where(r => r.Videotape.Title == reservationEntity.VideotapeName)
+            .Where(r => 
+                (reservationEntity.DateFrom <= r.DateFrom && r.DateFrom <= reservationEntity.DateTo) ||
+                (reservationEntity.DateFrom <= r.DateTo && r.DateTo <= reservationEntity.DateTo) ||
+                (r.DateFrom <= reservationEntity.DateFrom && reservationEntity.DateTo <= r.DateTo))
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<ReservationModel>> GetReservationsWithVideoTape(Guid videoTapeId)
@@ -85,5 +97,44 @@ public class ReservationRepository: RepositoryBase
             .Where(r => r.Videotape.Id == videoTapeId)
             .ToListAsync();
         return reservations;
+    }
+
+    public async Task<ReservationEntityOutput> UpdateReservation(ReservationEntityOutput reservationUpdate)
+    {
+        await using var ctx = _dbFactory.CreateDbContext();
+        var reservation = await ctx.Reservations
+            .Where(r => r.Id == reservationUpdate.Id)
+            .Include(r => r.Payment)
+            .FirstOrDefaultAsync() ?? null;
+        if (reservation == null)
+        {
+            throw new Exception("Reservation doesn't exist");
+        }
+
+        if (reservation.State != reservationUpdate.State)
+        {
+            reservation.State = reservationUpdate.State;    
+        }
+
+        if (reservationUpdate.Payed != reservation.Payment.Paid)
+        {
+            reservation.Payment.Paid = reservationUpdate.Payed;
+        }
+        
+        
+        if (reservationUpdate.DateFrom != reservation.DateFrom || reservationUpdate.DateTo != reservation.DateTo)
+        {
+            reservation.DateFrom = reservationUpdate.DateFrom;
+        }
+
+        if (reservationUpdate.DateTo != reservation.DateTo)
+        {
+            reservation.DateTo = reservationUpdate.DateTo;
+        }
+        
+        
+        ctx.Reservations.Update(reservation);
+        await ctx.SaveChangesAsync();
+        return reservationUpdate;
     }
 }

@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Facades;
 using video_pujcovna_back.Models;
 using video_pujcovna_back.Repository;
+using JsonResult = video_pujcovna_back.Repository.JsonResult;
 
 namespace video_pujcovna_back.Controllers;
 
@@ -27,15 +29,47 @@ public class UserController: ControllerBase<UserRepository>
     
     [HttpGet("all")]
     [Authorize(Roles = "admin")]
-    public async Task<IEnumerable<UserEntityOutput>> GetAllUsers()
+    public async Task<JsonResult> GetAllUsers()
     {
-        return await Repository.GetAllUser();
+        try
+        {
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.OK,
+                Data = await Repository.GetAllUser()
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.ExpectationFailed,
+                Errors = new[] { "Error while getting all users" }
+            };
+        }
     }
 
     [HttpGet("{id:guid}/reservations")]
-    public async Task<IEnumerable<ReservationEntityOutput>> GetUserReservations(Guid id)
+    public async Task<JsonResult> GetUserReservations(Guid id)
     {
-        return await Repository.GetUserReservations(id);
+        try
+        {
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.OK,
+                Data = await Repository.GetUserReservations(id)
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.ExpectationFailed,
+                Errors = new[] { "Error while getting user reservations" }
+            };
+        }
     }
     
     [HttpGet("{id:guid}")]
