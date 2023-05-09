@@ -92,4 +92,27 @@ public class UserController: ControllerBase<UserRepository>
         return await _userFacade.UpdateUser(id, userUpdate);
         
     }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "admin")]
+    public async Task<JsonResult> DeleteUser(Guid id)
+    {
+        try
+        {
+            return new JsonResult()
+            {
+                Status = HttpStatusCode.OK,
+                Data = await _userFacade.DeleteUser(id)
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new JsonResult
+            {
+                Status = HttpStatusCode.BadRequest,
+                Errors = new[] { "Error while deleting user" }
+            };
+        }
+    }
 }

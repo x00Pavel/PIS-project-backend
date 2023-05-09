@@ -96,11 +96,14 @@ public class UserRepository: RepositoryBase
         return user;
     }
 
-    public void DeleteUser(UserModel userModel)
+    public async Task<bool> DeleteUser(Guid id)
     {
-        using var context = _dbFactory.CreateDbContext();
-        context.Users.Remove(userModel);
-        context.SaveChanges();
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        if (user is not { Deleted: false }) throw new Exception("Can't delete user");
+        user.Deleted = true;
+        await _userManager.UpdateAsync(user);
+        return true;
+
     }
 
     public async Task<UserEntityOutput> GetUser(Guid id)
@@ -120,6 +123,7 @@ public class UserRepository: RepositoryBase
     public async Task<IEnumerable<UserEntityOutput>> GetAllUser()
     {
         var allUsers = await _userManager.Users
+            .Where(u=> !u.Deleted)
             .ToListAsync();
         var mapped = _mapper.Map<IList<UserModel>, IList<UserEntityOutput>>(allUsers);
         foreach (var u in mapped)

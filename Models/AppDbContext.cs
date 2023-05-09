@@ -39,7 +39,7 @@ namespace video_pujcovna_back.Models
         {   
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new RoleModelConfig());
-            modelBuilder.ApplyConfiguration(new UserModelConfig());
+            // modelBuilder.ApplyConfiguration(new UserModelConfig());
             modelBuilder.ApplyConfiguration(new UserRoleConfig());
             modelBuilder.ApplyConfiguration(new GenreModelConfig());
             modelBuilder.ApplyConfiguration(new ActorModelConfig());

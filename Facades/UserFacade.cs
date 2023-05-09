@@ -53,4 +53,9 @@ public class UserFacade
         var result = await _userRepository.UpdateUser(id, userUpdate);
         return _mapper.Map<UserModel, UserEntityOutput>(result);
     }
+
+    public async Task<object> DeleteUser(Guid id)
+    {
+        return _userRepository.DeleteUser(id);
+    }
 }
