@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using video_pujcovna_back.DTO.Input;
 using video_pujcovna_back.DTO.Output;
 using video_pujcovna_back.Models;
@@ -47,7 +48,9 @@ public class ReservationMapper: Profile
             .ForMember(dst => dst.VideotapeName,
                 opt => opt.MapFrom(src => src.Videotape.Title))
             .ForMember(dst => dst.Payed,
-                opt => opt.MapFrom(src => src.Payment.Paid));
+                opt => opt.MapFrom(src => src.Payment.Paid))
+            .ForMember(dst => dst.UserName,
+                opt => opt.MapFrom(src => src.User.UserName));
         CreateMap<ReservationEntityInput, ReservationModel>()
             .ForMember(opt => opt.User,
                 opt => opt.MapFrom<ReservationUserMapper>())

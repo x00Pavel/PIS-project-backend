@@ -56,6 +56,6 @@ public class UserFacade
 
     public async Task<object> DeleteUser(Guid id)
     {
-        return _userRepository.DeleteUser(id);
+        return await _userRepository.DeleteUser(id);
     }
 }

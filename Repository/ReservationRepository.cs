@@ -60,6 +60,7 @@ public class ReservationRepository: RepositoryBase
         var reservations = await context.Reservations
             .Include(x => x.Videotape)
             .Include(x => x.Payment)
+            .Include(x => x.User)
             .ToListAsync();
         return _mapper.Map<IList<ReservationModel>, IList<ReservationEntityOutput>>(reservations);
     }
@@ -82,8 +83,8 @@ public class ReservationRepository: RepositoryBase
         await using var context = _dbFactory.CreateDbContext();
         // invert following condition
         return await context.Reservations
-            .Where(r => r.Videotape.Title == reservationEntity.VideotapeName)
-            .Where(r => 
+            .Where(r => r.Videotape.Title == reservationEntity.VideotapeName && r.Id != reservationEntity.Id)
+            .Where(r =>
                 (reservationEntity.DateFrom <= r.DateFrom && r.DateFrom <= reservationEntity.DateTo) ||
                 (reservationEntity.DateFrom <= r.DateTo && r.DateTo <= reservationEntity.DateTo) ||
                 (r.DateFrom <= reservationEntity.DateFrom && reservationEntity.DateTo <= r.DateTo))
